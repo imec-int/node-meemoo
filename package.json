@@ -1,0 +1,34 @@
+{
+  "name": "node-a-thousand-twitter-pictures",
+  "description": "Application to flash lots of twitter pictures across the screen",
+  "version": "0.0.1",
+  "author": {
+    "name": "MiX",
+    "url": "https://github.com/mixbe/"
+  },
+  "bugs": {
+    "url": "https://github.com/mixbe/node-a-thousand-twitter-pictures/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mixbe/node-a-thousand-twitter-pictures.git"
+  },
+  "main": "./app",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "dependencies": {
+    "express": "3.0.0rc4",
+    "stylus": "*",
+    "jade": "~0.28.1",
+    "httpreq": "~0.2.3",
+    "oauth": "~0.9.8",
+    "async": "~0.2.6",
+    "cheerio": "~0.10.7",
+    "underscore": "~1.4.4",
+    "socket.io": "~0.9.13"
+  }
+}
