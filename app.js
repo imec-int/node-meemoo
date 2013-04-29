@@ -5,6 +5,7 @@ var httpreq 	= require('httpreq');
 var OAuth       = require('oauth').OAuth;
 var querystring = require('querystring');
 var config 		= require('./config');
+var twitconfig 	= require('./twitter.config');
 var util 		= require('util');
 var async 		= require('async');
 var cheerio 	= require('cheerio');
@@ -48,8 +49,8 @@ io.set('log level', 0); // geen socket.io debug info, thx!
 var twitterOAuth = new OAuth(
 	"https://api.twitter.com/oauth/request_token",
 	"https://api.twitter.com/oauth/access_token",
-	config.twitter.consumerKey,
-	config.twitter.consumerSecret,
+	twitconfig.twitter.consumerKey,
+	twitconfig.twitter.consumerSecret,
 	"1.0",
 	null,
 	"HMAC-SHA1"
@@ -68,7 +69,7 @@ var State = {
 // Webserver root page:
 app.get('/', function (req, res){
 	res.render('index', {
-		title: 'A thousand twitter pictures'
+		title: 'Node Meemoo'
 	});
 });
 
@@ -136,7 +137,7 @@ function startSimpleSearch(){
 		include_entities: true
 	});
 
-	twitterOAuth.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?' + parameters, "GET", config.twitter.token, config.twitter.secret,
+	twitterOAuth.getProtectedResource('https://api.twitter.com/1.1/search/tweets.json?' + parameters, "GET", twitconfig.twitter.token, twitconfig.twitter.secret,
 		function (err, data, res){
 			if(err) return console.log(err);
 
@@ -168,7 +169,7 @@ function startSearchHose(){
 		track: config.app.searchterms.join(',')
 	});
 
-	var twitterhose = twitterOAuth.get('https://stream.twitter.com/1.1/statuses/filter.json?' + parameters, config.twitter.token, config.twitter.secret);
+	var twitterhose = twitterOAuth.get('https://stream.twitter.com/1.1/statuses/filter.json?' + parameters, twitconfig.twitter.token, twitconfig.twitter.secret);
 	twitterhose.addListener('response', function (res){
 		console.log("searchhose started");
 		res.setEncoding('utf8');
@@ -195,20 +196,20 @@ function startSearchHose(){
 
 
 function startOnePercenthose(){
-	if(config.twitter2.token && config.twitter2.secret){
+	if(twitconfig.twitter2.token && twitconfig.twitter2.secret){
 		// need a second account for a second streaming connection:
 		var twitterOAuth2 = new OAuth(
 			"https://api.twitter.com/oauth/request_token",
 			"https://api.twitter.com/oauth/access_token",
-			config.twitter2.consumerKey,
-			config.twitter2.consumerSecret,
+			twitconfig.twitter2.consumerKey,
+			twitconfig.twitter2.consumerSecret,
 			"1.0",
 			null,
 			"HMAC-SHA1"
 		);
 
 		// 3.) de 1% hose
-		var onepercenthose = twitterOAuth2.get('https://stream.twitter.com/1.1/statuses/sample.json', config.twitter2.token, config.twitter2.secret);
+		var onepercenthose = twitterOAuth2.get('https://stream.twitter.com/1.1/statuses/sample.json', twitconfig.twitter2.token, twitconfig.twitter2.secret);
 		onepercenthose.addListener('response', function (res){
 			console.log("onepercenthose started");
 			res.setEncoding('utf8');
@@ -236,20 +237,20 @@ function startOnePercenthose(){
 }
 
 function startTwitterhose(){
-	if(config.twitter2.token && config.twitter2.secret){
+	if(twitconfig.twitter2.token && twitconfig.twitter2.secret){
 		// need a second account for a second streaming connection:
 		var twitterOAuth2 = new OAuth(
 			"https://api.twitter.com/oauth/request_token",
 			"https://api.twitter.com/oauth/access_token",
-			config.twitter2.consumerKey,
-			config.twitter2.consumerSecret,
+			twitconfig.twitter2.consumerKey,
+			twitconfig.twitter2.consumerSecret,
 			"1.0",
 			null,
 			"HMAC-SHA1"
 		);
 
 		// 3.) de 1% hose
-		var onepercenthose = twitterOAuth2.get('https://stream.twitter.com/1.1/statuses/sample.json', config.twitter2.token, config.twitter2.secret);
+		var onepercenthose = twitterOAuth2.get('https://stream.twitter.com/1.1/statuses/sample.json', twitconfig.twitter2.token, twitconfig.twitter2.secret);
 		var cntr = 0;
 		onepercenthose.addListener('response', function (res){
 			console.log("twitterhose started");

@@ -15,9 +15,12 @@ results
 npm-debug.log
 node_modules
 .DS_Store
+<<<<<<< HEAD
 
 config.js
 =======
 
 .DS_Store
 >>>>>>> DStore
+=======
+>>>>>>> Seperate Twitter config file for keys
