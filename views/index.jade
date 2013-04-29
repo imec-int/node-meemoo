@@ -1,22 +1,178 @@
 !!! 5
 html
-	head
-		meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
-		title #{title}
-		link(rel='stylesheet', href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css")
-		link(rel='stylesheet', href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-responsive.min.css")
-		link(rel='stylesheet', href="/stylesheets/style.css")
-
-		script(type='text/javascript', src='//code.jquery.com/jquery.min.js')
-		script(type='text/javascript', src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js')
-		script(type='text/javascript', src='/socket.io/socket.io.js')
-		script(type='text/javascript', src='/javascripts/index.js')
-		script(type='text/javascript', src='/server.js')
-
-	body
-		p #{title}
-
-		#pictures
-
-		button.btn.btn-success#start Start
-
+  //
+     <html manifest="iframework.appcache"> 
+  head
+    meta(charset='utf-8')
+    title meemoo/iframework: hackable web apps
+    script(src='libs/yepnope.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(type='text/javascript')
+      (function(){
+      "use strict";
+      window._meemooInitialize = function(compatible) {
+      if (!document.getElementById("iframework-info")) {
+      // Wait for DOM
+      window.setTimeout(function(){
+      _meemooInitialize(compatible);
+      }, 100);
+      return false;
+      }
+      if (window.Iframework){
+      // Already initialized
+      return false;
+      }
+      if (!compatible) {
+      document.getElementById("iframework-info").innerHTML = "» You need a modern browser to run this. ";
+      document.getElementById("iframework-info").innerHTML += '<a href="#" onclick="_meemooInitialize(true);return false;">Try anyway?</a>';
+      return false;
+      }
+      document.getElementById("iframework-info").innerHTML = "» 1/2: Loading libraries...";
+      // Remember to debug with ?DEBUG
+      var debug = (window.location.search && window.location.search === "?DEBUG");
+      var anticache = "20130408";
+      var debugLibs = [
+      // Libs
+      'libs/jquery.js',
+      'libs/jquery-ui/jquery-ui.js',
+      // CSS
+      'libs/jquery-ui/jquery-ui.css',
+      'http://fonts.googleapis.com/css?family=Nova+Flat&.css',
+      'iframework.css'
+      ];
+      var buildLibs = [
+      // Libs
+      'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+      'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+      // CSS
+      'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/smoothness/jquery-ui.min.css',
+      'http://fonts.googleapis.com/css?family=Nova+Flat&.css',
+      'iframework.css?nocache='+anticache
+      ];
+      var debugFiles = [
+      // Libs
+      'libs/underscore.js',
+      'libs/backbone.js',
+      'libs/backbone.localStorage.js',
+      'libs/mousetrap.js',
+      // 'libs/jquery.ui.touch-punch.js',
+      // Iframework
+      'src/iframework.js',
+      'src/iframework-utils.js',
+      'src/eventshistory.js',
+      'src/local-app.js',
+      'src/local-app-view.js',
+      'src/graph.js',
+      'src/graph-view.js',
+      'src/node.js',
+      'src/node-view.js',
+      'src/node-box.js',
+      'src/node-box-view.js',
+      'src/node-box-native-view.js',
+      'src/node-box-iframe.js',
+      'src/node-box-iframe-view.js',
+      'src/port.js',
+      'src/port-view.js',
+      'src/port-in.js',
+      'src/port-in-view.js',
+      'src/port-out.js',
+      'src/port-out-view.js',
+      'src/module.js',
+      'src/module-view.js',
+      'src/edge.js',
+      'src/edge-view.js',
+      'src/router.js',
+      // Nodes (most are loaded dynamically)
+      'src/nodes/image.js',
+      // Plugins
+      'src/plugins/source.js',
+      'src/plugins/library.js',
+      'src/plugins/images.js',
+      // All Iframework loaded
+      'src/iframework-last.js',
+      // Load examples
+      'src/examples/module-library.js',
+      'src/examples/apps.js'
+      ];
+      var buildFiles = [
+      // Iframework compressed
+      'build/meemoo-iframework.min.js?nocache='+anticache,
+      // load examples
+      'src/examples/module-library.js',
+      'src/examples/apps.js'
+      ];
+      if (debug) {
+      document.getElementById("debug-info").innerHTML = "DEBUG » ";
+      }
+      yepnope([
+      {
+      // Try the CDN stuff first
+      load: (debug ? debugLibs : buildLibs),
+      complete: function(){
+      if (!window.jQuery) {
+      // CDN offline?
+      yepnope("libs/jquery.js");
+      yepnope("libs/jquery-ui/jquery-ui.js");
+      yepnope("libs/jquery-ui/jquery-ui.css");
+      }
+      document.getElementById("iframework-info").innerHTML = "» 2/2: Loading Meemoo...";
+      }
+      },
+      {
+      // Load all of the src/ files, or just the minified one
+      load: (debug ? debugFiles : buildFiles),
+      complete: function(){
+      // All loaded
+      if (window.Iframework) {
+      document.getElementById("iframework-info").innerHTML = "» Loaded!";
+      window.setTimeout(function(){
+      document.getElementById("iframework-info").innerHTML = "";
+      }, 1500);
+      } else {
+      document.getElementById("iframework-info").innerHTML = "";
+      // document.getElementById("iframework-info").innerHTML = "» Something didn't work (;_;)";
+      }
+      }
+      }
+      ]);
+      }
+      // This tests to see if the browser can do data clone for postMessage
+      // We'll assume that if it can do that it can handle the rest
+      // Adapted from http://thecssninja.com/demo/sclones/
+      if(!!window.postMessage) {
+      try {
+      // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
+      // When it doesn't we capture the message event and check the
+      // internal [[Class]] property of the message being passed through.
+      // Safari will pass through DOM nodes as Null
+      // iOS Safari on the other hand passes it through as DOMWindow
+      window.onmessage = function(e){
+      var type = Object.prototype.toString.call(e.data);
+      var safariCompatible = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? true : false;
+      if (!window.Iframework) {
+      _meemooInitialize(safariCompatible);
+      }
+      // Only keep the onmessage function for the one test
+      window.onmessage = null;
+      };
+      // Spec states you can't transmit DOM nodes and it will throw an error
+      // postMessage implimentations that support cloned data will throw.
+      window.postMessage(document.createElement("a"),"*");
+      } catch(e) {
+      // BBOS6 throws but doesn't pass through the correct exception
+      // so check error message
+      var validCompatible = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? true : false;
+      _meemooInitialize(validCompatible);
+      }
+      } else {
+      _meemooInitialize(false);
+      }
+      })();
+  body
+    footer(style='font-size: 10px; font-family: Monaco, monospace;')
+      span#debug-info
+      a(href='http://meemoo.org/', target='_blank') meemoo
+      | »
+      a(href='https://github.com/meemoo/iframework', target='_blank') source
+      span#iframework-info
+      noscript » This web app uses JavaScript (and plenty of it).
