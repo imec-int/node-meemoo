@@ -298,7 +298,7 @@ function startTwitterhose(){
 
 				//chunk to seperate tweets
 				var chunkbits = chunkbuffer.split("\n");
-				var chunkbufferIsOk = false;
+				chunkbuffer = ''; // chunkbuffer alvast leegmaken
 
 				for (var i = 0; i < chunkbits.length; i++) {
 
@@ -313,18 +313,12 @@ function startTwitterhose(){
 							// stukje dat niet geparsed raakt terug aan de chunkbuffer toevoegen
 							// hopelijk komt het tweede stukje van de tweet dan straks binnen
 							chunkbuffer = chunkbits[i];
-							chunkbufferIsOk = true;
 						}else{
 							console.log("corrupt tweet:"); // zou niet niet mogen voorkomen (tenzij twitter echt slecht is :P)
 							console.log(chunkbits[i]);
 						}
 					}
 
-				}
-
-				// alle tweets waren ok, chunkbuffer resetten:
-				if(!chunkbufferIsOk){
-					chunkbuffer = '';
 				}
 
 			});
