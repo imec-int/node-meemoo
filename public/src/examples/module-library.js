@@ -4,12 +4,14 @@
 $(function(){
 
   var library = {
-    
+
     data: [
+      {"src":"meemoo:data/hlnfeed","info":{"title":"HLN Feed","author":"Sam Decrock","description":"Gather 'real-time' articles from the HLN syndication feed"}},
       {"src":"meemoo:data/twitter","info":{"title":"Twitter - 1%","author":"ME","description":"Gather real-time data from the Twitter Streaming API"}},
       {"src":"meemoo:data/twitterSearch","info":{"title":"Twitter - Hashtags","author":"ME","description":"Gather real-time data from the filtered Twitter Streaming API based on hashtags"}},
       {"src":"meemoo:data/twitter/picture","info":{"title":"twitter pictures","author":"ME","description":"Gather real-time pitures from the Twitter Streaming API"}},
       {"src":"meemoo:data/tweet","info":{"title":"tweet","author":"ME","description":"Shows the attributes of a Tweet"}},
+      {"src":"meemoo:data/article","info":{"title":"article","author":"Sam Decrock","description":"Shows the attributes of an Article"}},
       {"src":"meemoo:data/object","info":{"title":"Dynamic Object","author":"ME","description":"A dynamic obje'ct to hold data"}}
     ],
     image: [
@@ -112,7 +114,7 @@ $(function(){
       {"src":"http://forresto.github.com/meemoo-speak.js/text2speech.html","info":{"title":"text2speech","author":"forresto","description":"text to speech with speak.js"}}
     ]
   };
-  
+
   Iframework.loadLibrary(library);
 
 });

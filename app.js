@@ -6,7 +6,6 @@ var OAuth       = require('oauth').OAuth;
 var querystring = require('querystring');
 var config 		= require('./config');
 var twitconfig 	= require('./twitter.config');
-var util 		= require('util');
 var async 		= require('async');
 var cheerio 	= require('cheerio');
 var _ 			= require('underscore');
@@ -14,7 +13,7 @@ var express 	= require('express');
 var http 		= require('http')
 var path 		= require('path');
 var socketio 	= require('socket.io');
-var url 		= require('url');
+var xmlreader 	= require('xmlreader');
 
 var app = express();
 
@@ -522,6 +521,69 @@ function extractInstagramUrl(url, callback){
 				callback(err);
 			}
 		}
+	});
+}
+
+
+
+var articles = {};
+
+
+
+app.post('/rest/hlnfeed/update', function (req, res){
+	articles = {};
+	watchHLNfeed();
+
+	res.json({err:0});
+});
+
+
+
+function readHLNfeed(callback){
+	console.log("checking HLN feed");
+	httpreq.get('http://pe-service.persgroep.be/rest/hln/nl/article/navigation/1/', function (err, res){
+		if(err) return callback(err);
+
+		xmlreader.read(res.body, function (err, res){
+			if(err) return callback(err);
+
+			res.articleList.articles.article.each(function (i, xmlarticle){
+				var id =  xmlarticle.uid.id.text();
+				var introduction = (typeof xmlarticle.introduction.text === 'function')?xmlarticle.introduction.text():null;
+				var image = (xmlarticle.teaserPhoto && xmlarticle.teaserPhoto.uri)?xmlarticle.teaserPhoto.uri.text():null;
+
+				var article = {
+					title: xmlarticle.title.text(),
+					id: id,
+					creationDate: xmlarticle.creationDate.text(),
+					introduction: introduction,
+					image: image
+				};
+
+				if(!articles[id]){
+					articles[id] = article;
+					newArticle(article);
+				}
+			});
+
+			return callback();
+		});
+	});
+}
+
+function newArticle(article){
+	io.sockets.emit('newarticle', article);
+}
+
+
+function watchHLNfeed(){
+	readHLNfeed(function (err){
+		if(err) console.log(err);
+
+		setTimeout(function(){
+			watchHLNfeed();
+		},3000); //binnen x seconden nog s checken
+
 	});
 }
 
