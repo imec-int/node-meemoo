@@ -4,10 +4,10 @@
 
 $(function(){
 
-  var template = 
+  var template =
     '<form class="textform">'+
       '<label><span class="label"></span> '+
-        '<img src="/prox?image_url=2.bp.blogspot.com/-V12IHKad5yI/UEUF4ahxWcI/AAAAAAAAAXE/7fsFoty31GI/s1600/wittgenstein_duck_rabbit.jpg" class="image" alt="Twitter" width="128px">'+
+        '<img src="/prox?url=http://2.bp.blogspot.com/-V12IHKad5yI/UEUF4ahxWcI/AAAAAAAAAXE/7fsFoty31GI/s1600/wittgenstein_duck_rabbit.jpg" class="image" alt="Twitter" width="128px">'+
       '</label>'+
       '<button class="send" type="submit">send</button>'+
     '</form>';
