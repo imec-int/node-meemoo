@@ -7,7 +7,7 @@ $(function(){
   var template = 
     '<form class="textform">'+
       '<label><span class="label"></span> '+
-        '<img src="img/twitter-logo.png" class="image" alt="Twitter" height="100%" width="100%">'+
+        '<img src="/prox?image_url=2.bp.blogspot.com/-V12IHKad5yI/UEUF4ahxWcI/AAAAAAAAAXE/7fsFoty31GI/s1600/wittgenstein_duck_rabbit.jpg" class="image" alt="Twitter" width="128px">'+
       '</label>'+
       '<button class="send" type="submit">send</button>'+
     '</form>';

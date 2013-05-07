@@ -8,7 +8,8 @@ $(function(){
     data: [
       {"src":"meemoo:data/twitter","info":{"title":"twitter","author":"ME","description":"Gather real-time data from the Twitter Streaming API"}},
       {"src":"meemoo:data/twitter/picture","info":{"title":"twitter pictures","author":"ME","description":"Gather real-time pitures from the Twitter Streaming API"}},
-      {"src":"meemoo:data/tweet","info":{"title":"tweet","author":"ME","description":"Shows the attributes of a Tweet"}}
+      {"src":"meemoo:data/tweet","info":{"title":"tweet","author":"ME","description":"Shows the attributes of a Tweet"}},
+      {"src":"meemoo:data/object","info":{"title":"Dynamic Object","author":"ME","description":"A dynamic obje'ct to hold data"}}
     ],
     image: [
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},

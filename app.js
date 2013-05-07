@@ -14,6 +14,7 @@ var express 	= require('express');
 var http 		= require('http')
 var path 		= require('path');
 var socketio 	= require('socket.io');
+var url 		= require('url');
 
 var app = express();
 
@@ -31,6 +32,11 @@ app.configure(function(){
 	app.use(express.session());
 	app.use(app.router);
 	app.use(require('stylus').middleware(__dirname + '/public'));
+	app.use(function(req, res, next) {
+	  res.header("Access-Control-Allow-Origin", "*");
+	  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	  next();
+	});
 	app.use(express.static(path.join(__dirname, 'public')));
 });
 
@@ -65,6 +71,13 @@ var State = {
 /**
  * Functies en andere logica
  */
+
+app.all('*', function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+	next();
+ });
 
 // Webserver root page:
 app.get('/', function (req, res){
@@ -114,6 +127,75 @@ app.get('/server.js', function (req, res){
 app.get('/start', function (req, res){
 	res.json("OK");
 	io.sockets.emit('start', {});
+});
+
+// Proxy url for Twitter images
+app.get('/prox', function(request_from_client, response_to_client){
+	var url_parts = url.parse(request_from_client.url, true);
+	var query = url_parts.query;
+
+  
+  //var image_url = request_from_client.params.image_url;
+  var image_url = "http://"+query["image_url"];
+  console.log("Proxy request: "+image_url);
+
+	
+
+
+
+  var image_host_name = url.parse(image_url).hostname;
+  var image_path = url.parse(image_url).pathname;
+  var filename = url.parse(image_url).pathname.split("/").pop();
+ 
+  	var options = {
+	  host: image_host_name,
+	  port: 80,
+	  path: image_path
+	};
+
+	var imgGet = http.get(options, function(resp){
+		//console.log(resp);
+		var current_byte_index = 0;
+		var response_content_length = parseInt(resp.headers["content-length"]);
+    	var response_body = new Buffer(response_content_length);
+		console.log("------"+resp.headers["content-length"]+"-------");
+	  resp.on('data', function(chunk){
+	  	//console.log("Datachunk: "+chunk);
+	    response_body.write(""+chunk, current_byte_index, "binary");
+      	current_byte_index += chunk.length;
+	  }).on('end',function(){
+	  	response_to_client.contentType(resp.headers["content-type"]);
+		//	response_to_client.body = response_body;
+      	response_to_client.send(response_body);
+      	console.log(response_to_client);
+	  	console.log("------ end --------");
+	  });
+	  	
+	});
+	imgGet.end();
+
+  console.log("host: "+image_host_name);
+  console.log("path: "+url.parse(image_url).pathname);
+  console.log("file: "+filename);
+
+  /*var http_client = http.createClient(80, image_host_name);
+  var image_get_request = http_client.request('GET', image_url, {"host": image_host_name});
+  image_get_request.addListener('response', function(proxy_response){
+    var current_byte_index = 0;
+    var response_content_length = parseInt(proxy_response.header("Content-Length"));
+    var response_body = new Buffer(response_content_length);
+   
+    proxy_response.setEncoding('binary');
+    proxy_response.addListener('data', function(chunk){
+      response_body.write(chunk, current_byte_index, "binary");
+      current_byte_index += chunk.length;
+    });
+    proxy_response.addListener('end', function(){
+      response_to_client.contentType(filename);
+      response_to_client.send(response_body);
+    });
+  });
+  image_get_request.end();*/
 });
 
 
@@ -272,7 +354,7 @@ function startTwitterhose(){
 						if(tweet.hasOwnProperty("created_at")){
 							// if tweet is corrupt, it won't reach this line
 							addTweet(tweet);
-							console.log("tweet by: "+tweet.user.screen_name);
+							//console.log("tweet by: "+tweet.user.screen_name);
 						}else{
 							//console.log("Delete status received");
 						}
