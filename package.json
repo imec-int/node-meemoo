@@ -24,7 +24,7 @@
     "express": "3.0.0rc4",
     "stylus": "*",
     "jade": "~0.28.1",
-    "httpreq": "~0.2.3",
+    "httpreq": "*",
     "oauth": "~0.9.8",
     "async": "~0.2.6",
     "cheerio": "~0.10.7",
