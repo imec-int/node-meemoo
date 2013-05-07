@@ -1,7 +1,8 @@
 /*global Whammy:true*/
 
 $(function(){
-  var template = '<center><img src="img/twitter-logo.png" alt="Twitter" width="80%"></center>';
+  var template =  '<center ><img src="img/twitter-logo.png" alt="Twitter" width="60%"></center>'+
+                  '<span class="count" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'
 
 
   Iframework.NativeNodes["data-twitter"] = Iframework.NativeNodes["data"].extend({
@@ -22,6 +23,8 @@ $(function(){
       // on socket newpicture
       socket.on('newtweet', function (data) {
         self.sendTweet(data);
+        var cnt = parseInt($('.count').text());
+        $('.count').text(cnt+1);
         //console.log(data);
       });
     },

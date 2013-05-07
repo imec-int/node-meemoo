@@ -1,7 +1,8 @@
 /*global Whammy:true*/
 
 $(function(){
-  var template =  '<center><img src="img/twitter-logo.png" alt="Twitter" height="60%"></center>'+
+  var template =  '<center ><img src="img/twitter-logo.png" alt="Twitter" width="60%"></center>'+
+                  '<span class="count" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'+
                   '<form style="display: relative" class="textform">'+
                     '<label><span style="font-size: 9px; color:#555" class="label">Hashtags/keywords (comma-seperated)</span> '+
                       '<input type="text" class="text" style="width:90%"></input>'+
@@ -30,6 +31,8 @@ $(function(){
       // on socket newpicture
       socket.on('newtweetsearch', function (data) {
         self.sendTweet(data);
+        var cnt = parseInt($('.count').text());
+        $('.count').text(cnt+1);
         //console.log(data);
       });
     },
