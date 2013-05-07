@@ -286,7 +286,7 @@ function startTwitterSearchHose(hashtags){
 	twitterhose.addListener('response', function (res){
 		console.log("searchhose started");
 		res.setEncoding('utf8');
-		
+
 		var chunkbuffer = '';
 		res.addListener('data', function (chunk){
 			chunkbuffer += chunk; //kunnen nog dingen inzitten van de vorige chunk
@@ -525,19 +525,17 @@ function extractInstagramUrl(url, callback){
 }
 
 
+/**
+ * HLN Feed:
+ */
+var hlnArticles = {};
 
-var articles = {};
-
-
-
-app.post('/rest/hlnfeed/update', function (req, res){
-	articles = {};
+app.post('/rest/hlnfeed/start', function (req, res){
+	hlnArticles = {};
 	watchHLNfeed();
 
 	res.json({err:0});
 });
-
-
 
 function readHLNfeed(callback){
 	console.log("checking HLN feed");
@@ -560,9 +558,9 @@ function readHLNfeed(callback){
 					image: image
 				};
 
-				if(!articles[id]){
-					articles[id] = article;
-					newArticle(article);
+				if(!hlnArticles[id]){
+					hlnArticles[id] = article;
+					newHLNArticle(article);
 				}
 			});
 
@@ -571,8 +569,8 @@ function readHLNfeed(callback){
 	});
 }
 
-function newArticle(article){
-	io.sockets.emit('newarticle', article);
+function newHLNArticle(article){
+	io.sockets.emit('newHLNarticle', article);
 }
 
 
@@ -582,8 +580,7 @@ function watchHLNfeed(){
 
 		setTimeout(function(){
 			watchHLNfeed();
-		},3000); //binnen x seconden nog s checken
-
+		},4000); //binnen x seconden nog s checken
 	});
 }
 

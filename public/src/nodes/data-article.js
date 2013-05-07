@@ -27,27 +27,20 @@ $(function(){
 
     template: _.template(template),
     info: {
-      title: "text",
-      description: "a text box to save and send text"
-    },
-    events: {
-      "submit .textform": "submit"
+      title: "Article",
+      description: "Represents an article object"
     },
     initializeModule: function(){
-      this.$(".button").button();
-    },
-    submit: function(){
-      this._val = this.$(".text").val();
-      this.inputsend();
 
-      this.model.addOutput({name:"test",type:"pol"});
-      return false;
     },
     inputarticle: function(article){
       this._val = article;
 
       for(var key in article){
         this.$("." + key).val( article[key] );
+
+
+        this.model.addOutput({name:key,type:"string"});
       }
       this.sendArticle(article)
     },

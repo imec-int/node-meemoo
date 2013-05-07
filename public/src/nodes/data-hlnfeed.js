@@ -3,7 +3,7 @@
 $(function(){
   var template =  '<center><img src="img/hln-logo.png" alt="HLN" height="40%"></center>'+
                   '<form style="display: relative" class="textform">'+
-                    '<button class="update">Update</button>'+
+                    '<button class="start">Start</button>'+
                   '</form>';
 
 
@@ -17,14 +17,14 @@ $(function(){
     },
     initializeModule: function(){
       var self = this;
-      this.$(".update")
+      this.$(".start")
         .click(function(e){
           e.stopPropagation();
-          $.post('/rest/hlnfeed/update');
+          $.post('/rest/hlnfeed/start');
         });
       // init socket to listen to Twitter stream
       var socket = io.connect(window.location.hostname);
-      socket.on('newarticle', function (data) {
+      socket.on('newHLNarticle', function (data) {
         self.sendArticle(data);
       });
     },
