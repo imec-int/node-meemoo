@@ -529,9 +529,11 @@ function extractInstagramUrl(url, callback){
  * HLN Feed:
  */
 var hlnArticles = {};
+var hlnTimeout;
 
 app.post('/rest/hlnfeed/start', function (req, res){
 	hlnArticles = {};
+	clearTimeout(hlnTimeout);
 	watchHLNfeed();
 
 	res.json({err:0});
@@ -578,7 +580,7 @@ function watchHLNfeed(){
 	readHLNfeed(function (err){
 		if(err) console.log(err);
 
-		setTimeout(function(){
+		hlnTimeout = setTimeout(function(){
 			watchHLNfeed();
 		},4000); //binnen x seconden nog s checken
 	});
