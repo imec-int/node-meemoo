@@ -287,37 +287,46 @@ function startTwitterhose(){
 
 		// 3.) de 1% hose
 		var onepercenthose = twitterOAuth2.get('https://stream.twitter.com/1.1/statuses/sample.json', twitconfig.twitter2.token, twitconfig.twitter2.secret);
-		var cntr = 0;
+		var chunkbuffer = '';
 		onepercenthose.addListener('response', function (res){
 			console.log("twitterhose started");
 			res.setEncoding('utf8');
 			res.addListener('data', function (chunk){
 
 
-				cntr++;
-				//console.log("");
-				//console.log(cntr);
+				chunkbuffer += chunk; //kunnen nog dingen inzitten van de vorige chunk
 
-				try{
-					//chunk to seperate tweets
-					var chunkbits = chunk.split("\n");
-					//console.log(chunkbits.length-1+" tweets");
-					for (var i = 0; i < chunkbits.length -1; i++) {
-						var tweet = JSON.parse(chunkbits[i]);
-						// only add tweet statuses, not delete statuses
-						if(tweet.hasOwnProperty("created_at")){
-							// if tweet is corrupt, it won't reach this line
+				//chunk to seperate tweets
+				var chunkbits = chunkbuffer.split("\n");
+				var chunkbufferIsOk = false;
+
+				for (var i = 0; i < chunkbits.length; i++) {
+
+					var tweet = parseTweetchunk( chunkbits[i] );
+					if(tweet){
+						// geen 'delete'-tweets doorsturen:
+						if(tweet.hasOwnProperty("created_at"))
 							addTweet(tweet);
-							//console.log("tweet by: "+tweet.user.screen_name);
+					}else{
+						if(i == chunkbits.length-1){
+							// is laatste stukje
+							// stukje dat niet geparsed raakt terug aan de chunkbuffer toevoegen
+							// hopelijk komt het tweede stukje van de tweet dan straks binnen
+							chunkbuffer = chunkbits[i];
+							chunkbufferIsOk = true;
 						}else{
-							//console.log("Delete status received");
+							console.log("corrupt tweet:"); // zou niet niet mogen voorkomen (tenzij twitter echt slecht is :P)
+							console.log(chunkbits[i]);
 						}
+					}
 
-					};
-				}catch(err){
-					console.log("Corrupt Tweet received: "+err.message);
-					console.log(chunk);
 				}
+
+				// alle tweets waren ok, chunkbuffer resetten:
+				if(!chunkbufferIsOk){
+					chunkbuffer = '';
+				}
+
 			});
 
 			res.addListener('end', function(){
@@ -326,6 +335,16 @@ function startTwitterhose(){
 		});
 		onepercenthose.end();
 	}
+}
+
+function parseTweetchunk(tweetchunk){
+	var tweet;
+	try{
+		tweet = JSON.parse(tweetchunk);
+	}catch(err){
+		return false;
+	}
+	return tweet;
 }
 
 function addTweet(tweet){
