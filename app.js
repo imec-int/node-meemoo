@@ -124,7 +124,16 @@ app.get('/server.js', function (req, res){
 	res.send("App.alreadyfoundpictures = " + JSON.stringify(allpictures) + ";");
 });
 
-app.get('/start', function (req, res){
+app.post('/startOnepercent', function (req, res){
+	res.json("OK");
+	io.sockets.emit('start', {});
+});
+
+app.post('/startSearch', function (req, res){
+	var hString = req.body.hashtags;
+	if(hString){
+		var hashtags = hString.split(",");
+	}
 	res.json("OK");
 	io.sockets.emit('start', {});
 });

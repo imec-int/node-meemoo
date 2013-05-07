@@ -1,14 +1,14 @@
 /*global Whammy:true*/
 
 $(function(){
-  var template = '<img src="img/twitter-logo.png" alt="Twitter" height="100%" width="100%">';
+  var template = '<center><img src="img/twitter-logo.png" alt="Twitter" width="80%"></center>';
 
 
   Iframework.NativeNodes["data-twitter"] = Iframework.NativeNodes["data"].extend({
 
     template: _.template(template),
     info: {
-      title: "Twitter",
+      title: "Twitter - 1%",
       description: "Gather real-time data from the Twitter Streaming API"
     },
     initializeModule: function(){
@@ -25,10 +25,6 @@ $(function(){
         //console.log(data);
       });
     },
-    inputbang: function(){
-      this.send("bang", "!");
-      return false;
-    },
     sendTweet: function(tweet){
       this.send("tweets", tweet);
     },
@@ -36,10 +32,6 @@ $(function(){
       this.send("images", url);
     },
     inputs: {
-      bang: {
-        type: "bang",
-        description: "manual input bang"
-      }
     },
     outputs: {
       tweets: {
