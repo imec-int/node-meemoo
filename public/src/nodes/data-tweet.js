@@ -6,51 +6,51 @@ $(function(){
 
   var template = 
     '<form class="textform">'+
-      '<label><span class="label"><b>Tweet ID</b></span> '+
+      '<div><span class="label"><b>Tweet ID</b></span> '+
         '<input type="text" class="tweetId" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>Tweet</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>Tweet</b></span> '+
         '<input type="text" class="tweet" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>Timestamp</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>Timestamp</b></span> '+
         '<input type="text" class="created_at" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>Geo</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>Geo</b></span> '+
         '<input type="text" class="geo" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>Reply to</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>Reply to</b></span> '+
         '<input type="text" class="replyTo" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>Retweet of to</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>Retweet of to</b></span> '+
         '<input type="text" class="retweetOf" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | ID</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | ID</b></span> '+
         '<input type="text" class="userId" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Screen Name</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Screen Name</b></span> '+
         '<input type="text" class="screen_name" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Name</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Name</b></span> '+
         '<input type="text" class="name" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Followers</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Followers</b></span> '+
         '<input type="text" class="followers_count" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Following</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Following</b></span> '+
         '<input type="text" class="friends_count" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Location</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Location</b></span> '+
         '<input type="text" class="userLocation" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Time Zone</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Time Zone</b></span> '+
         '<input type="text" class="timeZone" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Language</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Language</b></span> '+
         '<input type="text" class="userLanguage" style="width:90%"></input>'+
-      '</label>'+
-      '<label><span class="label"><b>User | Profile image (URL)</b></span> '+
+      '</div>'+
+      '<div><span class="label"><b>User | Profile image (URL)</b></span> '+
         '<input type="text" class="userImage" style="width:90%"></input>'+
-      '</label>'+
+      '</div>'+
     '</form>';
 
   Iframework.NativeNodes["data-tweet"] = Iframework.NativeNodes["data"].extend({

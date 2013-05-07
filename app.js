@@ -125,17 +125,19 @@ app.get('/server.js', function (req, res){
 });
 
 app.post('/startOnepercent', function (req, res){
-	res.json("OK");
-	io.sockets.emit('start', {});
+	startTwitterhose();
+	res.json("Twitterhose successfully started");
 });
 
 app.post('/startSearch', function (req, res){
 	var hString = req.body.hashtags;
+	console.log("received update: "+hString);
 	if(hString){
-		var hashtags = hString.split(",");
+		//var hashtags = hString.split(",");
+		// start/update search hose
+		startTwitterSearchHose(hString);
+		res.json("Hashtags updated");
 	}
-	res.json("OK");
-	io.sockets.emit('start', {});
 });
 
 // Proxy url for Twitter images (eigenlijk voor alles :p)
@@ -160,7 +162,7 @@ function init(){
 	//startSimpleSearch();
 	//startSearchHose();
 	//startOnePercenthose();
-	startTwitterhose();
+	//startTwitterhose();
 }
 
 
@@ -198,7 +200,7 @@ function startSimpleSearch(){
 	);
 }
 
-
+// SAM - PICTURE BASED (momenteel niet gebruikt)
 function startSearchHose(){
 	// 2.) Luister ook naar nieuwe pictures die binnenkomen:
 	var parameters = querystring.stringify({
@@ -230,7 +232,7 @@ function startSearchHose(){
 	twitterhose.end();
 }
 
-
+// SAM - PICTURE BASED (momenteel niet gebruikt)
 function startOnePercenthose(){
 	if(twitconfig.twitter2.token && twitconfig.twitter2.secret){
 		// need a second account for a second streaming connection:
@@ -272,6 +274,58 @@ function startOnePercenthose(){
 	}
 }
 
+// ROBBY - TWEETS
+function startTwitterSearchHose(hashtags){
+	console.log("Twitter Search hose with: "+hashtags);
+
+	// 2.) Luister ook naar nieuwe pictures die binnenkomen:
+	var parameters = querystring.stringify({
+		track: hashtags
+	});
+
+	var twitterhose = twitterOAuth.get('https://stream.twitter.com/1.1/statuses/filter.json?' + parameters, twitconfig.twitter.token, twitconfig.twitter.secret);
+	twitterhose.addListener('response', function (res){
+		console.log("searchhose started");
+		res.setEncoding('utf8');
+		
+		var chunkbuffer = '';
+		res.addListener('data', function (chunk){
+			chunkbuffer += chunk; //kunnen nog dingen inzitten van de vorige chunk
+
+			//chunk to seperate tweets
+			var chunkbits = chunkbuffer.split("\n");
+			chunkbuffer = ''; // chunkbuffer alvast leegmaken
+
+			for (var i = 0; i < chunkbits.length; i++) {
+
+				var tweet = parseTweetchunk( chunkbits[i] );
+				if(tweet){
+					// geen 'delete'-tweets doorsturen:
+					if(tweet.hasOwnProperty("created_at"))
+						addSearchTweet(tweet);
+				}else{
+					if(i == chunkbits.length-1){
+						// is laatste stukje
+						// stukje dat niet geparsed raakt terug aan de chunkbuffer toevoegen
+						// hopelijk komt het tweede stukje van de tweet dan straks binnen
+						chunkbuffer = chunkbits[i];
+					}else{
+						console.log("corrupt tweet:"); // zou niet niet mogen voorkomen (tenzij twitter echt slecht is :P)
+						console.log(chunkbits[i]);
+					}
+				}
+
+			}
+		});
+
+		res.addListener('end', function(){
+			console.log("Twitterhose broke down");
+		});
+	});
+	twitterhose.end();
+}
+
+// ROBBY - TWEETS
 function startTwitterhose(){
 	if(twitconfig.twitter2.token && twitconfig.twitter2.secret){
 		// need a second account for a second streaming connection:
@@ -345,6 +399,12 @@ function addTweet(tweet){
 	// profile pic url vervangen:
 	tweet.user.profile_image_url = '/prox?url=' + encodeURIComponent(tweet.user.profile_image_url);
 	io.sockets.emit('newtweet', tweet);
+}
+
+function addSearchTweet(tweet){
+	// profile pic url vervangen:
+	tweet.user.profile_image_url = '/prox?url=' + encodeURIComponent(tweet.user.profile_image_url);
+	io.sockets.emit('newtweetsearch', tweet);
 }
 
 function addPicture(picture, array){

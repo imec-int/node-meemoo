@@ -1,8 +1,10 @@
 /*global Whammy:true*/
 
 $(function(){
+  var countId = "count"+Date.now();
+
   var template =  '<center ><img src="img/twitter-logo.png" alt="Twitter" width="60%"></center>'+
-                  '<span class="count" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'
+                  '<span id="'+countId+'" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'
 
 
   Iframework.NativeNodes["data-twitter"] = Iframework.NativeNodes["data"].extend({
@@ -14,17 +16,16 @@ $(function(){
     },
     initializeModule: function(){
       var self = this;
-      this.$(".button")
-        .click(function(e){
-          self.sendTweet();
+      $.post("/startOnepercent", {}, function(dat){
+          console.log(dat);
         });
       // init socket to listen to Twitter stream
       var socket = io.connect(window.location.hostname);
       // on socket newpicture
       socket.on('newtweet', function (data) {
         self.sendTweet(data);
-        var cnt = parseInt($('.count').text());
-        $('.count').text(cnt+1);
+        var cnt = parseInt($("#"+countId).text());
+        $("#"+countId).text(cnt+1);
         //console.log(data);
       });
     },
