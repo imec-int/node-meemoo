@@ -1,7 +1,9 @@
 /*global Whammy:true*/
 
 $(function(){
+  var countId = "count"+Date.now();
   var template =  '<center><img src="img/hln-logo.png" alt="HLN" height="40%"></center>'+
+                  '<span id="'+countId+'" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'+
                   '<form style="display: relative" class="textform">'+
                     '<button class="start">Start</button>'+
                   '</form>';
@@ -31,6 +33,8 @@ $(function(){
       // init socket to listen to Twitter stream
       var socket = io.connect(window.location.hostname);
       socket.on('newHLNarticle', function (data) {
+        var cnt = parseInt($("#"+countId).text());
+        $("#"+countId).text(cnt+1);
         self.sendArticle(data);
       });
     },

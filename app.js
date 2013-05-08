@@ -593,6 +593,9 @@ function readPersgroepfeed(brand, callback){
 				var id =  xmlarticle.uid.id.text();
 				var introduction = (typeof xmlarticle.introduction.text === 'function')?xmlarticle.introduction.text():null;
 				var image = (xmlarticle.teaserPhoto && xmlarticle.teaserPhoto.uri)?xmlarticle.teaserPhoto.uri.text():null;
+				if(image)
+					image = '/prox?url=' + encodeURIComponent(image);
+	
 
 				var article = {
 					title: xmlarticle.title.text(),

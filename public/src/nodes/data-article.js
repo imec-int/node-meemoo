@@ -6,19 +6,19 @@ $(function(){
 
   var template =
     '<form class="textform">'+
-      '<label><span class="label"><b>ID</b></span> '+
+      '<label><span class="label"><b>ID</b></span> <br />'+
         '<input type="text" class="id" style="width:90%"></input>'+
       '</label>'+
-      '<label><span class="label"><b>Title</b></span> '+
+      '<label><span class="label"><b>Title</b></span><br /> '+
         '<input type="text" class="title" style="width:90%"></input>'+
       '</label>'+
-      '<label><span class="label"><b>Creation Date</b></span> '+
+      '<label><span class="label"><b>Creation Date</b></span><br /> '+
         '<input type="text" class="creationDate" style="width:90%"></input>'+
       '</label>'+
-      '<label><span class="label"><b>Introduction</b></span> '+
+      '<label><span class="label"><b>Introduction</b></span><br /> '+
         '<input type="text" class="introduction" style="width:90%"></input>'+
       '</label>'+
-      '<label><span class="label"><b>Image Url</b></span> '+
+      '<label><span class="label"><b>Image Url</b></span><br /> '+
         '<input type="text" class="image" style="width:90%"></input>'+
       '</label>'+
     '</form>';
