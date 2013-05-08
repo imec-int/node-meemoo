@@ -48,7 +48,7 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 });
 
 var io = require('socket.io').listen(server);
-io.set('log level', 0); // geen socket.io debug info, thx!
+
 
 // authentication for other twitter requests
 var twitterOAuth = new OAuth(
@@ -139,6 +139,8 @@ app.post('/startSearch', function (req, res){
 	}
 });
 
+
+
 // Proxy url for Twitter images (eigenlijk voor alles :p)
 app.get('/prox', function (req, res){
 	if(!req.query.url) return res.json({err: "no url given"});
@@ -162,6 +164,14 @@ function init(){
 	//startSearchHose();
 	//startOnePercenthose();
 	//startTwitterhose();
+
+	io.set('log level', 0); // geen socket.io debug info, thx!
+	io.on('connection', function(socket){
+  		socket.on('message', function(data){
+  			console.log(data);
+  			io.sockets.emit(data["channel"],data["data"]);
+  		});
+  	});
 }
 
 

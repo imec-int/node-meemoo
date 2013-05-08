@@ -7,13 +7,23 @@ $(function(){
 
     data: [
       {"src":"meemoo:data/hlnfeed","info":{"title":"HLN Feed","author":"Sam Decrock","description":"Gather 'real-time' articles from the HLN syndication feed"}},
+<<<<<<< HEAD
       {"src":"meemoo:data/demorgenfeed","info":{"title":"DeMorgen Feed","author":"MiX","description":"Gather 'real-time' articles from the DeMorgen syndication feed"}},
       {"src":"meemoo:data/twitter","info":{"title":"Twitter - 1%","author":"ME","description":"Gather real-time data from the Twitter Streaming API"}},
       {"src":"meemoo:data/twitterSearch","info":{"title":"Twitter - Hashtags","author":"ME","description":"Gather real-time data from the filtered Twitter Streaming API based on hashtags"}},
       {"src":"meemoo:data/twitter/picture","info":{"title":"twitter pictures","author":"ME","description":"Gather real-time pitures from the Twitter Streaming API"}},
+=======
+      {"src":"meemoo:data/twitter","info":{"title":"Twitter - 1%","author":"Robby Wauters","description":"Gather real-time data from the Twitter Streaming API"}},
+      {"src":"meemoo:data/twitterSearch","info":{"title":"Twitter - Hashtags","author":"Robby Wauters","description":"Gather real-time data from the filtered Twitter Streaming API based on hashtags"}},
+      {"src":"meemoo:data/twitter/picture","info":{"title":"twitter pictures","author":"Robby Wauters","description":"Gather real-time pitures from the Twitter Streaming API"}},
+>>>>>>> Socket (Listener & Emitter) modules added
       {"src":"meemoo:data/tweet","info":{"title":"tweet","author":"ME","description":"Shows the attributes of a Tweet"}},
       {"src":"meemoo:data/article","info":{"title":"article","author":"Sam Decrock","description":"Shows the attributes of an Article"}},
-      {"src":"meemoo:data/object","info":{"title":"Dynamic Object","author":"ME","description":"A dynamic obje'ct to hold data"}}
+      {"src":"meemoo:data/object","info":{"title":"Dynamic Object","author":"Robby Wauters","description":"A dynamic obje'ct to hold data"}}
+    ],
+    socket: [
+      {"src":"meemoo:socket/emitter","info":{"title":"Socket Emitter","author":"Robby Wauters","description":"Emits an input to a given socket"}},
+      {"src":"meemoo:socket/receiver","info":{"title":"Socket Receiver","author":"Robby Wauters","description":"Listens to  a given socket"}}
     ],
     image: [
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
