@@ -42,6 +42,12 @@ $(function(){
         //console.log(data);
       });
     },
+    inputterms: function(terms){
+      $('#hashtags').val(terms);
+      $.post("/startSearch", {hashtags: terms}, function(dat){
+        console.log(dat);
+      });
+    },
     sendTweet: function(tweet){
       this.send("tweets", tweet);
     },
@@ -49,6 +55,10 @@ $(function(){
       this.send("images", url);
     },
     inputs: {
+      terms: {
+        type: "string",
+        description: "list of terms (JSON array)"
+      }
     },
     outputs: {
       tweets: {

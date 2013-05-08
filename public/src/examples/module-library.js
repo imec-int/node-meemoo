@@ -7,6 +7,7 @@ $(function(){
 
     data: [
       {"src":"meemoo:data/hlnfeed","info":{"title":"HLN Feed","author":"Sam Decrock","description":"Gather 'real-time' articles from the HLN syndication feed"}},
+      {"src":"meemoo:data/taggenerator","info":{"title":"Tag Generator","author":"MiX","description":"Generate tags from a text"}},
       {"src":"meemoo:data/demorgenfeed","info":{"title":"DeMorgen Feed","author":"MiX","description":"Gather 'real-time' articles from the DeMorgen syndication feed"}},
       {"src":"meemoo:data/twitter","info":{"title":"Twitter - 1%","author":"ME","description":"Gather real-time data from the Twitter Streaming API"}},
       {"src":"meemoo:data/twitterSearch","info":{"title":"Twitter - Hashtags","author":"ME","description":"Gather real-time data from the filtered Twitter Streaming API based on hashtags"}},
@@ -16,7 +17,9 @@ $(function(){
       {"src":"meemoo:data/twitter/picture","info":{"title":"twitter pictures","author":"Robby Wauters","description":"Gather real-time pitures from the Twitter Streaming API"}},
       {"src":"meemoo:data/tweet","info":{"title":"tweet","author":"ME","description":"Shows the attributes of a Tweet"}},
       {"src":"meemoo:data/article","info":{"title":"article","author":"Sam Decrock","description":"Shows the attributes of an Article"}},
-      {"src":"meemoo:data/object","info":{"title":"Dynamic Object","author":"Robby Wauters","description":"A dynamic obje'ct to hold data"}}
+      {"src":"meemoo:data/fulltextfromPGuri","info":{"title":"fulltextfromPGuri","author":"MiX","description":"given article uri, fetch full text"}},
+      {"src":"meemoo:data/textblock","info":{"title":"Text Block","author":"MiX","description":"enter text for submission to other modules"}},
+      {"src":"meemoo:data/object","info":{"title":"Dynamic Object","author":"Robby Wauters","description":"A dynamic object to hold data"}}
     ],
     socket: [
       {"src":"meemoo:socket/emitter","info":{"title":"Socket Emitter","author":"Robby Wauters","description":"Emits an input to a given socket"}},

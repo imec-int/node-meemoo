@@ -6,6 +6,7 @@ var OAuth       = require('oauth').OAuth;
 var querystring = require('querystring');
 var config 		= require('./config');
 var twitconfig 	= require('./twitter.config');
+var uriconfig	= require('./uris.config');
 var async 		= require('async');
 var cheerio 	= require('cheerio');
 var _ 			= require('underscore');
@@ -551,8 +552,8 @@ persgroepTimeouts = {};
 persgroepTimeouts.hln = null;
 persgroepTimeouts.demorgen = null;
 persgroepUrls = {};
-persgroepUrls.hln = 'http://pe-service.persgroep.be/rest/hln/nl/article/navigation/1/';
-persgroepUrls.demorgen = 'http://pe-service.persgroep.be/rest/dm/nl/article/navigation/982/';
+persgroepUrls.hln = uriconfig.HLNfeed;
+persgroepUrls.demorgen = uriconfig.DMfeed;
 persgroepMessageIdentifiers = {};
 persgroepMessageIdentifiers.hln = 'newHLNarticle';
 persgroepMessageIdentifiers.demorgen = 'newDeMorgenarticle';
@@ -587,6 +588,17 @@ app.post('/ajax/demorgenfeed/stop', function (req, res){
 	res.json({err:0});
 });
 
+app.get('/ajax/fullarticletext', function(req, res){
+	httpreq.get(req.query.uri, function(err, resu){
+		if(err) return res.json({error: err.stack});
+		xmlreader.read(resu.body, function(err, xml){
+			if(err) return res.json({error: err.stack});
+			var text = xml.articleDetail.text;
+			res.json({text: text});
+		});
+	});
+});
+
 function readPersgroepfeed(brand, callback){
 	// console.log("checking " + brand + " feed");
 	httpreq.get(persgroepUrls[brand], function (err, res){
@@ -601,7 +613,7 @@ function readPersgroepfeed(brand, callback){
 				var image = (xmlarticle.teaserPhoto && xmlarticle.teaserPhoto.uri)?xmlarticle.teaserPhoto.uri.text():null;
 				if(image)
 					image = '/prox?url=' + encodeURIComponent(image);
-	
+
 
 				var article = {
 					title: xmlarticle.title.text(),
@@ -637,6 +649,15 @@ function watchPersgroepfeed(brand){
 		},10000); //binnen x seconden nog s checken
 	});
 }
+
+
+app.post('/ajax/generatetagsfromtext', function(req, res){
+	httpreq.post(uriconfig.MMLabUri + '/tagger/namedEntities',{body: req.body.text},  function(er, tags){
+		if(er) return res.json({error: 'error generating tags'});
+		console.log(tags.body);
+		res.send(tags.body);
+	});
+});
 
 
 
