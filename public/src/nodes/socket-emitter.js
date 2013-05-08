@@ -39,8 +39,11 @@ $(function(){
       var channel = $("#"+currentId).text();
       console.log("input obj to "+channel);
       //console.log(obj);
-      if(channel && channel != "")
+      if(channel && channel != ""){
         socket.emit("message",{channel:channel, data:obj});
+        var cnt = parseInt($("#"+countId).text());
+        $("#"+countId).text(cnt+1);
+      }
       return false;
     },
     inputstring: function(string){
@@ -49,6 +52,17 @@ $(function(){
       //console.log(string);
       if(channel && channel != ""){
         socket.emit("message",{channel:channel, data:string});
+        var cnt = parseInt($("#"+countId).text());
+        $("#"+countId).text(cnt+1);
+      }
+      return false;
+    },
+    inputvalue: function(value){
+      var channel = $("#"+currentId).text();
+      //console.log("input string to "+channel);
+      //console.log(string);
+      if(channel && channel != ""){
+        socket.emit("message",{channel:channel, data:value});
         var cnt = parseInt($("#"+countId).text());
         $("#"+countId).text(cnt+1);
       }
