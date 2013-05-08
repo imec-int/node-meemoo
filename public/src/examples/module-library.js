@@ -48,6 +48,7 @@ $(function(){
       {"src":"meemoo:util/gate","info":{"title":"gate","author":"meemoo","description":"stop the data flow and let one through"}},
       {"src":"meemoo:time/throttle","info":{"title":"throttle","author":"meemoo","description":"too many fps? use throttle to limit data rate passing through flow."}},
       {"src":"meemoo:time/delay","info":{"title":"delay","author":"meemoo","description":"holds x values until the next one comes"}},
+      {"src":"meemoo:time/buffer","info":{"title":"buffer","author":"MiX","description":"buffers up to size values and emits them at rate/s"}},
       {"src":"meemoo:util/count","info":{"title":"count","author":"meemoo","description":"count the times that the data input is hit"}}
     ],
     time: [
