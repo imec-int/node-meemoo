@@ -85,6 +85,12 @@ app.get('/', function (req, res){
 	});
 });
 
+app.get('/d3', function (req, res){
+	res.render('deedrie', {
+		title: 'D3 visualization'
+	});
+});
+
 
 app.get('/filter', function (req, res){
 	res.render('index2', {
