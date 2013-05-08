@@ -12,7 +12,10 @@ $(function(){
       '<label><span class="label"><b>Title</b></span><br /> '+
         '<input type="text" class="title" style="width:90%"></input>'+
       '</label>'+
-      '<label><span class="label"><b>Creation Date</b></span><br /> '+
+      '<label><span class="label"><b>Uri</b></span><br /> '+
+        '<input type="text" class="uri" style="width:90%"></input>'+
+      '</label>'+
+      '<label><span class="label"><b>Creation Date</b></span> '+
         '<input type="text" class="creationDate" style="width:90%"></input>'+
       '</label>'+
       '<label><span class="label"><b>Introduction</b></span><br /> '+
@@ -59,6 +62,9 @@ $(function(){
         type: "string"
       },
       title: {
+        type: "string"
+      },
+      uri: {
         type: "string"
       },
       creationDate: {

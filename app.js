@@ -600,6 +600,7 @@ function readPersgroepfeed(brand, callback){
 				var article = {
 					title: xmlarticle.title.text(),
 					id: id,
+					uri: xmlarticle.uri.text(),
 					creationDate: xmlarticle.creationDate.text(),
 					introduction: introduction,
 					image: image
