@@ -7,6 +7,7 @@ $(function(){
 
     data: [
       {"src":"meemoo:data/hlnfeed","info":{"title":"HLN Feed","author":"Sam Decrock","description":"Gather 'real-time' articles from the HLN syndication feed"}},
+      {"src":"meemoo:data/demorgenfeed","info":{"title":"DeMorgen Feed","author":"MiX","description":"Gather 'real-time' articles from the DeMorgen syndication feed"}},
       {"src":"meemoo:data/twitter","info":{"title":"Twitter - 1%","author":"ME","description":"Gather real-time data from the Twitter Streaming API"}},
       {"src":"meemoo:data/twitterSearch","info":{"title":"Twitter - Hashtags","author":"ME","description":"Gather real-time data from the filtered Twitter Streaming API based on hashtags"}},
       {"src":"meemoo:data/twitter/picture","info":{"title":"twitter pictures","author":"ME","description":"Gather real-time pitures from the Twitter Streaming API"}},

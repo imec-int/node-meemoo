@@ -1,19 +1,19 @@
 /*global Whammy:true*/
 
 $(function(){
-  var template =  '<center><img src="img/hln-logo.png" alt="HLN" height="40%"></center>'+
+  var template =  '<center><img src="img/DM-logo.gif" alt="DeMorgen" height="30%"></center>'+
                   '<form style="display: relative" class="textform">'+
                     '<button class="start">Start</button>'+
                   '</form>';
 
 
 
-  Iframework.NativeNodes["data-hlnfeed"] = Iframework.NativeNodes["data"].extend({
+  Iframework.NativeNodes["data-demorgenfeed"] = Iframework.NativeNodes["data"].extend({
 
     template: _.template(template),
     info: {
-      title: "HLN Feed",
-      description: "Gather 'real-time' articles from the HLN syndication feed"
+      title: "DeMorgen Feed",
+      description: "Gather 'real-time' articles from the DeMorgen syndication feed"
     },
     initializeModule: function(){
       var self = this;
@@ -21,7 +21,7 @@ $(function(){
         .click(function(e){
           e.stopPropagation();
           var action = $(this).text();
-          $.post('/ajax/hlnfeed/' + action.toLowerCase());
+          $.post('/ajax/demorgenfeed/' + action.toLowerCase());
           if(action === 'Start'){
             $(this).text('Stop');
           }else{
@@ -30,7 +30,7 @@ $(function(){
         });
       // init socket to listen to Twitter stream
       var socket = io.connect(window.location.hostname);
-      socket.on('newHLNarticle', function (data) {
+      socket.on('newDeMorgenarticle', function (data) {
         self.sendArticle(data);
       });
     },
@@ -42,7 +42,7 @@ $(function(){
     outputs: {
       articles: {
         type: "string",
-        description: "sends constant stream of HLN articles"
+        description: "sends constant stream of DeMorgen articles"
       }
     }
 

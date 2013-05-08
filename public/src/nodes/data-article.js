@@ -35,7 +35,6 @@ $(function(){
     },
     inputarticle: function(article){
       this._val = article;
-
       for(var key in article){
         this.$("." + key).val( article[key] );
 

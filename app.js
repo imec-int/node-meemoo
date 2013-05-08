@@ -525,23 +525,55 @@ function extractInstagramUrl(url, callback){
 }
 
 
-/**
- * HLN Feed:
- */
-var hlnArticles = {};
-var hlnTimeout;
 
-app.post('/rest/hlnfeed/start', function (req, res){
-	hlnArticles = {};
-	clearTimeout(hlnTimeout);
-	watchHLNfeed();
+// Persgroep feeds: HLN & DeMorgen
 
+var persgroepArticles = {};
+persgroepArticles.hln = {};
+persgroepArticles.demorgen = {};
+persgroepTimeouts = {};
+persgroepTimeouts.hln = null;
+persgroepTimeouts.demorgen = null;
+persgroepUrls = {};
+persgroepUrls.hln = 'http://pe-service.persgroep.be/rest/hln/nl/article/navigation/1/';
+persgroepUrls.demorgen = 'http://pe-service.persgroep.be/rest/dm/nl/article/navigation/982/';
+persgroepMessageIdentifiers = {};
+persgroepMessageIdentifiers.hln = 'newHLNarticle';
+persgroepMessageIdentifiers.demorgen = 'newDeMorgenarticle';
+
+app.post('/ajax/hlnfeed/start', function (req, res){
+	console.log('starting hln');
+	persgroepArticles.hln = {};
+	clearTimeout(persgroepTimeouts.hln);
+	watchPersgroepfeed('hln');
 	res.json({err:0});
 });
 
-function readHLNfeed(callback){
-	console.log("checking HLN feed");
-	httpreq.get('http://pe-service.persgroep.be/rest/hln/nl/article/navigation/1/', function (err, res){
+app.post('/ajax/hlnfeed/stop', function(req, res){
+	console.log('stopping hln');
+	persgroepArticles.hln = {};
+	clearTimeout(persgroepTimeouts.hln);
+	res.json({err:0});
+});
+
+app.post('/ajax/demorgenfeed/start', function (req, res){
+	console.log('starting demorgen');
+	persgroepArticles.demorgen = {};
+	clearTimeout(persgroepTimeouts.demorgen);
+	watchPersgroepfeed('demorgen');
+	res.json({err:0});
+});
+
+app.post('/ajax/demorgenfeed/stop', function (req, res){
+	console.log('stopping demorgen');
+	persgroepArticles.demorgen = {};
+	clearTimeout(persgroepTimeouts.demorgen);
+	res.json({err:0});
+});
+
+function readPersgroepfeed(brand, callback){
+	// console.log("checking " + brand + " feed");
+	httpreq.get(persgroepUrls[brand], function (err, res){
 		if(err) return callback(err);
 
 		xmlreader.read(res.body, function (err, res){
@@ -560,9 +592,9 @@ function readHLNfeed(callback){
 					image: image
 				};
 
-				if(!hlnArticles[id]){
-					hlnArticles[id] = article;
-					newHLNArticle(article);
+				if(!persgroepArticles[brand][id]){
+					persgroepArticles[brand][id] = article;
+					newPersgroepArticle(brand, article);
 				}
 			});
 
@@ -571,18 +603,18 @@ function readHLNfeed(callback){
 	});
 }
 
-function newHLNArticle(article){
-	io.sockets.emit('newHLNarticle', article);
+
+function newPersgroepArticle(brand, article){
+	io.sockets.emit(persgroepMessageIdentifiers[brand], article);
 }
 
 
-function watchHLNfeed(){
-	readHLNfeed(function (err){
+function watchPersgroepfeed(brand){
+	readPersgroepfeed(brand, function(err){
 		if(err) console.log(err);
-
-		hlnTimeout = setTimeout(function(){
-			watchHLNfeed();
-		},4000); //binnen x seconden nog s checken
+		persgroepTimeouts[brand] = setTimeout(function(){
+			watchPersgroepfeed(brand);
+		},10000); //binnen x seconden nog s checken
 	});
 }
 
