@@ -1,15 +1,16 @@
-/*global Stats:true*/
-
-// extends src/nodes/time.js which extends src/node-box-native-view.js
+/**
+ * Creates and outputs an object where new input fields can be dynamically added.
+ * 
+**/
 
 $(function(){
-
+  var textId = "text"+Date.now();
   var template = 
     '<form class="textform">'+
-      '<label><span class="label"><b>Tweet</b></span> '+
-        '<input type="text" class="tweet" style="width:90%"></input>'+
+      '<label><span class="label"><b>New Field</b></span> '+
+        '<input type="text" id="'+textId+'" style="width:90%"></input>'+
       '</label>'+
-      '<button class="send" type="submit">send</button>'+
+      '<button class="send" type="submit">Add Field</button>'+
     '</form>';
 
   Iframework.NativeNodes["data-object"] = Iframework.NativeNodes["data"].extend({
@@ -17,7 +18,7 @@ $(function(){
     template: _.template(template),
     info: {
       title: "Dynamic Data object",
-      description: "A dynamic obje'ct to hold data"
+      description: "A dynamic object to hold data"
     },
     events: {
       "submit .textform": "submit"
@@ -25,35 +26,42 @@ $(function(){
     initializeModule: function(){
       this.$(".button").button();
     },
-    submit: function(){
-      this._val = this.$(".text").val();
-      //this.inputsend();
-      
-      this.model.addInput({name:this._val,type:"string"});
+    inputbang: function(){
+      var nModels = this.model.Inputs.models.length;
+      var outputObj = {};
+      for(inp in this.model.Inputs.models){
+        //console.log(this.model.Inputs.models[inp].id+": "+this["_"+this.model.Inputs.models[inp].id])
+        if(this.model.Inputs.models[inp].id != "bang")
+          outputObj[this.model.Inputs.models[inp].id] = this["_"+this.model.Inputs.models[inp].id];
+      }
+      if(outputObj != {})
+        this.sendobject(outputObj);
       return false;
     },
-    inputtweet: function(twt){
-      this._val = twt;
-      this.$(".tweet").val(twt.text);
-      this.$(".user").val(twt.user.screen_name);
-      this.sendTweet(twt)
+    submit: function(){
+      this._val = this.$("#"+textId).val();
+      //this.inputsend();
+      var toObj = {type:"string"};
+      toObj.name = this.$("#"+textId).val();
+      this.model.addInput(toObj);
+      this.$("#"+textId).val("");
+      return false;
     },
-    sendTweet: function(tweet){
-      this.send("text", tweet.text);
-      this.send("user", tweet.user.screen_name);
+    sendobject: function(obj){
+      /*console.log("sending: ");
+      console.log(obj);
+      console.log("");*/
+      this.send("object", obj);
     },
     inputs: {
-      tweet: {
-        type: "string",
-        description: "manual input of text"
+      bang: {
+        type: "bang",
+        description: "Outputs the object"
       }
     },
     outputs: {
-      text: {
-        type: "string"
-      },
-      user: {
-        type: "string"
+      object: {
+        type: "object"
       }
     }
 

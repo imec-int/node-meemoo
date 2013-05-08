@@ -98,7 +98,7 @@ $(function(){
     sendTweet: function(tweet){
       this.send("tweetId", this.$(".tweetId").val());
       this.send("tweet", this.$(".tweet").val());
-      this.send("timestamp", this.$(".timestamp").val());
+      this.send("timestamp", this.$(".created_at").val());
       this.send("geo", this.$(".geo").val());
       this.send("replyTo", this.$(".replyTo").val());
       this.send("retweetOf", this.$(".retweetOf").val());
