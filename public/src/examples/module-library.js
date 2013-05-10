@@ -52,7 +52,9 @@ $(function(){
       {"src":"meemoo:util/stats","info":{"title":"stats.js","author":"mr.doob","description":"fps stats graph"}},
       {"src":"meemoo:image/palette","info":{"title":"palette","author":"nrabinowitz","description":"get color palette from image color quantize"}},
       {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
-      {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}}
+      {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}},
+      {"src":"meemoo:util/convert-int2float","info":{"title":"convert-int2float","author":"kaosbeat","description":"int2float"}}
+    
     ],
     flow: [
       {"src":"meemoo:util/gate","info":{"title":"gate","author":"meemoo","description":"stop the data flow and let one through"}},
