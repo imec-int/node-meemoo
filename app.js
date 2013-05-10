@@ -657,7 +657,7 @@ function watchPersgroepfeed(brand){
 
 
 app.post('/ajax/generatetagsfromtext', function(req, res){
-	httpreq.post(uriconfig.MMLabUri + '/tagger/namedEntities',{body: req.body.text},  function(er, tags){
+	httpreq.post(uriconfig.MMLabUri + 'tagger/namedEntities',{body: req.body.text},  function(er, tags){
 		if(er) return res.json({error: 'error generating tags'});
 		console.log(tags.body);
 		res.send(tags.body);
