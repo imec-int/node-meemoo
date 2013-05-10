@@ -35,16 +35,16 @@ $(function(){
       
       if(val.length == 0){
         // if string is empty: turn white
-        $("#"+textId).css("background-color","#FFF");
+        this.$("#"+textId).css("background-color","#FFF");
       }else if(input.indexOf(check)>-1){
         // if check succeeds: turn green
-        $("#"+textId).css("background-color","#CAE7B6");
+        this.$("#"+textId).css("background-color","#CAE7B6");
         this.send("string",val);
       }else if(input.indexOf(check)==-1){
         // if check fails: turn red
-        $("#"+textId).css("background-color","#E0A8A3");
+        this.$("#"+textId).css("background-color","#E0A8A3");
       }
-      console.log(this._case);
+      //console.log(this._case);
     },
     inputcheck: function(val){
       this._check = val;
