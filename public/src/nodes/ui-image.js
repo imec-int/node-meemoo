@@ -7,7 +7,7 @@ $(function(){
   var template =
     '<form class="textform">'+
       '<label><span class="label"></span> '+
-        '<img src="/prox?url=http://2.bp.blogspot.com/-V12IHKad5yI/UEUF4ahxWcI/AAAAAAAAAXE/7fsFoty31GI/s1600/wittgenstein_duck_rabbit.jpg" class="image" alt="Twitter" width="128px">'+
+        '<img src="" class="image" alt="Twitter" width="90%">'+
       '</label>'+
     '</form>';
 
