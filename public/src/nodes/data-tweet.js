@@ -65,21 +65,11 @@ $(function(){
 
     template: _.template(template),
     info: {
-      title: "text",
-      description: "a text box to save and send text"
-    },
-    events: {
-      "submit .textform": "submit"
+      title: "Tweet object",
+      description: "Represents and shows all the attributes of a tweet"
     },
     initializeModule: function(){
-      this.$(".button").button();
-    },
-    submit: function(){
-      this._val = this.$(".text").val();
-      this.inputsend();
       
-      this.model.addOutput({name:"test",type:"pol"});
-      return false;
     },
     inputtweet: function(twt){
       //this._val = twt;
@@ -182,6 +172,8 @@ $(function(){
         type: "string"
       },
       profile_background_color: {
+        type: "string"
+      },
       image: {
         type: "string"
       }
