@@ -72,7 +72,7 @@ $(function(){
       var totalString = totalArray.join();
 
       $('#hashtags').val(totalString);
-      
+
       //$('#hashtags').val(terms);
       $.post("/startSearch", {hashtags: totalString}, function(dat){
         console.log(dat);
@@ -87,7 +87,7 @@ $(function(){
     inputs: {
       terms: {
         type: "string",
-        description: "list of terms (JSON array)"
+        description: "list of terms (comma separated)"
       }
     },
     outputs: {
