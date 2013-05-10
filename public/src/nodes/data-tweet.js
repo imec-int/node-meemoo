@@ -24,6 +24,9 @@ $(function(){
       '<div><span class="label"><b>Retweet of to</b></span><br /> '+
         '<input type="text" class="retweetOf" style="width:90%"></input>'+
       '</div>'+
+      '<div><span class="label"><b>Retweetcount</b></span><br /> '+
+        '<input type="text" class="retweet_count" style="width:90%"></input>'+
+      '</div>'+
       '<div><span class="label"><b>User | ID</b></span><br /> '+
         '<input type="text" class="userId" style="width:90%"></input>'+
       '</div>'+
@@ -77,7 +80,7 @@ $(function(){
       return false;
     },
     inputtweet: function(twt){
-      this._val = twt;
+      //this._val = twt;
       console.log(twt);
       this.$(".tweetId").val(twt.id);
       this.$(".tweet").val(twt.text);
@@ -88,6 +91,7 @@ $(function(){
         this.$(".retweetOf").val(twt.retweeted_status.id);
       else
         this.$(".retweetOf").val("");
+      this.$(".retweet_count").val(twt.retweet_count);
       this.$(".userId").val(twt.user.id);
       this.$(".screen_name").val(twt.user.screen_name);
       this.$(".name").val(twt.user.name);
@@ -107,6 +111,7 @@ $(function(){
       this.send("geo", this.$(".geo").val());
       this.send("replyTo", this.$(".replyTo").val());
       this.send("retweetOf", this.$(".retweetOf").val());
+      this.send("retweet_count", this.$(".retweet_count").val());
       this.send("userId", this.$(".userId").val());
       this.send("screenName", this.$(".screen_name").val());
       this.send("name", this.$(".name").val());
@@ -140,6 +145,9 @@ $(function(){
         type: "int"
       },
       retweetOf: {
+        type: "int"
+      },
+      retweet_count: {
         type: "int"
       },
       userId: {
