@@ -1,12 +1,14 @@
 /*global Whammy:true*/
 
 $(function(){
+  var TRACKT_HRESHOLD = 200;
+
   var countId = "count"+Date.now();
 
   var template =  '<center ><img src="img/twitter-logo.png" alt="Twitter" width="60%"></center>'+
                   '<span id="'+countId+'" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'+
                   '<form style="display: relative" class="textform">'+
-                    '<label><span style="font-size: 9px; color:#555" class="label">Hashtags/keywords (comma-seperated)</span> '+
+                    '<label><span style="font-size: 9px; color:#555" class="label">Hashtags/terms (comma-seperated)</span> '+
                       '<input id="hashtags" type="text" class="text" style="width:90%"></input>'+
                     '</label>'+
                     '<button class="update">Update</button>'+
@@ -43,8 +45,36 @@ $(function(){
       });
     },
     inputterms: function(terms){
-      $('#hashtags').val(terms);
-      $.post("/startSearch", {hashtags: terms}, function(dat){
+      var totalArray = [];
+      // check existing terms
+      var old = $('#hashtags').val();
+      var oldArray = old.split(",");
+        // trim terms
+        for(t in oldArray){
+          var n = oldArray[t].trim();
+          if (/^[0-9A-Za-z]+$/.test(n))
+              totalArray.push(n);
+        }
+      // check new terms
+      var newArray = terms.split(",");
+        // trim terms remove non-alphanumeric
+        for(t in newArray){
+          var n = newArray[t].trim();
+          if (/^[0-9A-Za-z]+$/.test(n)){
+            // check for doubles
+            if($.inArray(n,totalArray) == -1)
+              totalArray.push(n);
+          }
+        }
+
+      // if terms reach a certain threshold, delete the older ones
+
+      var totalString = totalArray.join();
+
+      $('#hashtags').val(totalString);
+      
+      //$('#hashtags').val(terms);
+      $.post("/startSearch", {hashtags: totalString}, function(dat){
         console.log(dat);
       });
     },
