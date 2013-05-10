@@ -40,6 +40,7 @@ $(function(){
         // if check succeeds: turn green
         this.$("#"+textId).css("background-color","#CAE7B6");
         this.send("string",val);
+        this.send("data",this._data);
       }else if(input.indexOf(check)==-1){
         // if check fails: turn red
         this.$("#"+textId).css("background-color","#E0A8A3");
@@ -52,6 +53,9 @@ $(function(){
     },
     inputcase: function(val){
       this._case = val;
+    },
+    inputdata: function(val){
+      this._data = val;
     },
     inputs: {
       string: {
@@ -67,11 +71,18 @@ $(function(){
         type: "boolean",
         description: "Case-sensitive checking",
         "default": "true"
+      },
+      data: {
+        type: "all",
+        description: "original object to send along when check succeeds"
       }
     },
     outputs: {
       string: {
         type: "string"
+      },
+      data: {
+        type: "all",
       }
     }
 
