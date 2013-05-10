@@ -1,5 +1,9 @@
 var socket;
 var svg;
+var params = {
+    impact: 10,
+    duration: 1000
+};
 
 $(function(){
 	// init socket
@@ -13,6 +17,7 @@ $(function(){
     h = 1080,
    // z = d3.scale.category20c(),
     i = 0;
+    impact=10;
 	svg = d3.select("#container").append("svg:svg")
     .attr("width", w)
     .attr("height", h)
@@ -29,16 +34,14 @@ function onSocket(data){
 
 ///DAT.gui stuff
 
-var params = {
-    interation: 5000
-};
+
 
 var FizzyText = function() {
-  this.speed = 0.8;
+  //this.impact = 10;
   this.dataHoseToggle = false;
   this.dataHose = function() {
-	speed = 50;
-	console.log(this.speed);
+	//impact = 50;
+	console.log(params.impact);
 	};
 };
 
@@ -46,8 +49,19 @@ var FizzyText = function() {
 window.onload = function() {
   var text = new FizzyText();	
   var gui = new dat.GUI();
-  gui.add(params, 'interation');
-  gui.add(text, 'speed');
+  //gui.add(params, 'impact');
+  //gui.add(text, 'speed');
+  var controller = gui.add(params, 'impact', 1, 20);
+  controller.onChange(function(value) {
+	  // Fires on every change, drag, keypress, etc.
+	  params.impact = value;
+  });
+  var DurController = gui.add(params, 'duration', 100, 2000);
+  DurController.onChange(function(value) {
+	  // Fires on every change, drag, keypress, etc.
+	  params.duration = value;
+  });
+
 
 };
 
@@ -69,18 +83,18 @@ function packeryTweet(data) {
 function addTwarticle(data) {
 
   //var m = d3.svg.mouse(this);
-
+console.log(impact)
   svg.append("svg:circle")
       .attr("cx", 100)
       .attr("cy", 100)
-      .attr("r", data.radius/10)
+      .attr("r", data.radius/params.impact)
       .style("opacity", 1)
       .style("stroke", "#"+data.color)
       .style("stroke-width", data.strokewidth)
       .style("stroke-opacity", 1)
 
     .transition()
-      .duration(1000)
+      .duration(params.duration)
       .ease(Math.sqrt)
       .attr("r", 0)
       .style("stroke-opacity", 0)
