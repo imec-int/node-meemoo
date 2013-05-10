@@ -92,6 +92,12 @@ app.get('/d3', function (req, res){
 	});
 });
 
+app.get('/d3basic', function (req, res){
+	res.render('d3Basic', {
+		title: 'D3 visualization'
+	});
+});
+
 app.get('/packery', function (req, res){
 	res.render('packery', {
 		title: 'packery visualization'
