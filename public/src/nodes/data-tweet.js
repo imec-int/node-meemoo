@@ -54,13 +54,10 @@ $(function(){
       '<div><span class="label"><b>User | Profile image (URL)</b></span><br /> '+
         '<input type="text" class="userImage" style="width:90%"></input>'+
       '</div>'+
-<<<<<<< HEAD
       '<div><span class="label"><b>profile background color</b></span><br /> '+
         '<input type="text" class="profile_background_color" style="width:90%"></input>'+
-=======
       '<div><span class="label"><b>Media | Image (URL)</b></span><br /> '+
         '<input type="text" class="image" style="width:90%"></input>'+
->>>>>>> Included image in tweet
       '</div>'+
     '</form>';
 
@@ -106,11 +103,8 @@ $(function(){
       this.$(".timeZone").val(twt.user.time_zone);
       this.$(".userLanguage").val(twt.user.lang);
       this.$(".userImage").val(twt.user.profile_image_url);
-<<<<<<< HEAD
       this.$(".profile_background_color").val(twt.user.profile_background_color);
-=======
       this.$(".image").val(twt.image);
->>>>>>> Included image in tweet
       this.sendTweet(twt)
     },
     sendTweet: function(tweet){
@@ -129,11 +123,8 @@ $(function(){
       this.send("location", this.$(".userLocation").val());
       this.send("language", this.$(".userLanguage").val());
       this.send("profileImage", this.$(".userImage").val());
-<<<<<<< HEAD
       this.send("profile_background_color", this.$(".profile_background_color").val());
-=======
       this.send("image", this.$(".image").val());
->>>>>>> Included image in tweet
     },
     inputs: {
       tweet: {
@@ -190,11 +181,8 @@ $(function(){
       profileImage: {
         type: "string"
       },
-<<<<<<< HEAD
       profile_background_color: {
-=======
       image: {
->>>>>>> Included image in tweet
         type: "string"
       }
     }
