@@ -51,6 +51,9 @@ $(function(){
       '<div><span class="label"><b>User | Profile image (URL)</b></span><br /> '+
         '<input type="text" class="userImage" style="width:90%"></input>'+
       '</div>'+
+      '<div><span class="label"><b>profile background color</b></span><br /> '+
+        '<input type="text" class="profile_background_color" style="width:90%"></input>'+
+      '</div>'+
     '</form>';
 
   Iframework.NativeNodes["data-tweet"] = Iframework.NativeNodes["data"].extend({
@@ -75,6 +78,7 @@ $(function(){
     },
     inputtweet: function(twt){
       this._val = twt;
+      console.log(twt);
       this.$(".tweetId").val(twt.id);
       this.$(".tweet").val(twt.text);
       this.$(".created_at").val(twt.created_at);
@@ -93,6 +97,7 @@ $(function(){
       this.$(".timeZone").val(twt.user.time_zone);
       this.$(".userLanguage").val(twt.user.lang);
       this.$(".userImage").val(twt.user.profile_image_url);
+      this.$(".profile_background_color").val(twt.user.profile_background_color);
       this.sendTweet(twt)
     },
     sendTweet: function(tweet){
@@ -110,6 +115,7 @@ $(function(){
       this.send("location", this.$(".userLocation").val());
       this.send("language", this.$(".userLanguage").val());
       this.send("profileImage", this.$(".userImage").val());
+      this.send(".profile_background_color", this.$("profile_background_color").val());
     },
     inputs: {
       tweet: {
@@ -162,6 +168,9 @@ $(function(){
       },
       profileImage: {
         type: "string"
+      },
+      profile_background_color: {
+        type: "color"
       }
     }
 
