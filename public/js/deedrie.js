@@ -4,7 +4,7 @@ $(function(){
 	// init socket
 	socket = io.connect(window.location.hostname);
 	// listen to socket
-	socket.on('newtweet', onSocket);
+	socket.on('tweets', onSocket);
 
 	//init packery
 	$('#container').packery();
@@ -12,8 +12,20 @@ $(function(){
 });
 
 function onSocket(data){
-	console.log(data);
-}
+	//console.log(data.followers);
+	if (data.followers > 100) {
+		$('#container').append('<div class="item w2">' + data.tweet + '</div>');
+		// var item = '<div class="item w2">' + data.tweet + '</div>'
+	} else {
+		$('#container').append('<div class="item">' + data.tweet + '</div>');
+		// var item = '<div class="item>' + data.tweet + '</div>'
+	}
+	// $('#container').append(item)
+	// 	.packery( 'appended', item );
+
+	$('#container').packery();
+
+};
 
 
 ///DAT.gui stuff
