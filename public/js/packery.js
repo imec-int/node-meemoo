@@ -16,6 +16,9 @@ $(function(){
 
 function onSocket(data){
 	console.log(data);
+	
+	//var date = new Date(data["date"]);
+
 	var max = Math.max(data["red"],data["green"], data["blue"]);
 	var ratio = max/255 +0.1;
 
@@ -27,7 +30,7 @@ function onSocket(data){
 	$("#green").text(nG);
 	$("#blue").text(nB);
 
-console.log("rgb("+nR+","+nG+","+nB+")");
+	//console.log("rgb("+nR+","+nG+","+nB+")");
 	// bg color
 	$("body").css("background-color","rgb("+nR+","+nG+","+nB+")");
 }
