@@ -5,6 +5,10 @@ $(function(){
 	socket = io.connect(window.location.hostname);
 	// listen to socket
 	socket.on('newtweet', onSocket);
+
+	//init packery
+	$('#container').packery();
+
 });
 
 function onSocket(data){
