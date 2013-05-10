@@ -25,6 +25,9 @@ $(function(){
       {"src":"meemoo:socket/emitter","info":{"title":"Socket Emitter","author":"Robby Wauters","description":"Emits an input to a given socket"}},
       {"src":"meemoo:socket/receiver","info":{"title":"Socket Receiver","author":"Robby Wauters","description":"Listens to  a given socket"}}
     ],
+    conditional: [
+      {"src":"meemoo:conditional/contains","info":{"title":"Contains condition","author":"Robby Wauters","description":"Checks if a given string contains a word"}}
+    ],
     image: [
       {"src":"meemoo:image/cam","info":{"title":"cam","author":"meemoo","description":"HTML5 webcam with getUserMedia."}},
       {"src":"meemoo:image/transform","info":{"title":"transform","author":"meemoo","description":"scale, translate, and/or rotate image (centered)"}},
