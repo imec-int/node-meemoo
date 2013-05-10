@@ -41,7 +41,7 @@ $(function(){
         self.sendTweet(data);
         var cnt = parseInt($("#"+countId).text());
         $("#"+countId).text(cnt+1);
-        //console.log(data);
+        console.log(data.image);
       });
     },
     inputterms: function(terms){
@@ -81,9 +81,6 @@ $(function(){
     sendTweet: function(tweet){
       this.send("tweets", tweet);
     },
-    sendImage: function(url){
-      this.send("images", url);
-    },
     inputs: {
       terms: {
         type: "string",
@@ -94,10 +91,6 @@ $(function(){
       tweets: {
         type: "string",
         description: "sends constant stream of tweets"
-      },
-      images: {
-        type: "string",
-        description: "sends constant stream of images"
       }
     }
 

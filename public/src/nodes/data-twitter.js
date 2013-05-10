@@ -32,19 +32,12 @@ $(function(){
     sendTweet: function(tweet){
       this.send("tweets", tweet);
     },
-    sendImage: function(url){
-      this.send("images", url);
-    },
     inputs: {
     },
     outputs: {
       tweets: {
         type: "string",
         description: "sends constant stream of tweets"
-      },
-      images: {
-        type: "string",
-        description: "sends constant stream of images"
       }
     }
 

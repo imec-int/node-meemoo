@@ -9,54 +9,38 @@ $(function(){
       '<label><span class="label"></span> '+
         '<img src="/prox?url=http://2.bp.blogspot.com/-V12IHKad5yI/UEUF4ahxWcI/AAAAAAAAAXE/7fsFoty31GI/s1600/wittgenstein_duck_rabbit.jpg" class="image" alt="Twitter" width="128px">'+
       '</label>'+
-      '<button class="send" type="submit">send</button>'+
     '</form>';
 
   Iframework.NativeNodes["ui-image"] = Iframework.NativeNodes["ui"].extend({
 
     template: _.template(template),
     info: {
-      title: "text",
-      description: "a text box to save and send text"
-    },
-    events: {
-      "submit .textform": "submit"
+      title: "Image tag",
+      description: "a fast image box with a src attribute"
     },
     initializeModule: function(){
       this.$(".button").button();
     },
-    submit: function(){
-      this._val = this.$(".text").val();
-      this.inputsend();
-      return false;
-    },
-    inputvalue: function(val){
+    inputsrc: function(val){
       this._val = val;
       this.$(".image").attr("src",val);
-      this.inputsend();
+      this.send("src", this._val);
     },
     inputlabel: function(label){
       this.$(".label").text(label);
     },
-    inputsend: function(){
-      this.send("string", this._val);
-    },
     inputs: {
-      value: {
+      src: {
         type: "string",
-        description: "manual input of text"
+        description: "src of the image"
       },
       label: {
         type: "string",
-        description: "label for input"
-      },
-      send: {
-        type: "bang",
-        description: "send the text"
+        description: "label of the image"
       }
     },
     outputs: {
-      string: {
+      src: {
         type: "string"
       }
     }

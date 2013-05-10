@@ -146,6 +146,11 @@ app.post('/startOnepercent', function (req, res){
 	res.json("Twitterhose successfully started");
 });
 
+app.post('/startOnepercentImages', function (req, res){
+	startOnePercentImagehose();
+	res.json("Twitter Image hose successfully started");
+});
+
 app.post('/startSearch', function (req, res){
 	var hString = req.body.hashtags;
 	console.log("received update: "+hString);
@@ -260,7 +265,7 @@ function startSearchHose(){
 }
 
 // SAM - PICTURE BASED (momenteel niet gebruikt)
-function startOnePercenthose(){
+function startOnePercentImagehose(){
 	if(twitconfig.twitter2.token && twitconfig.twitter2.secret){
 		// need a second account for a second streaming connection:
 		var twitterOAuth2 = new OAuth(
@@ -275,22 +280,42 @@ function startOnePercenthose(){
 
 		// 3.) de 1% hose
 		var onepercenthose = twitterOAuth2.get('https://stream.twitter.com/1.1/statuses/sample.json', twitconfig.twitter2.token, twitconfig.twitter2.secret);
+		var chunkbuffer = '';
 		onepercenthose.addListener('response', function (res){
-			console.log("onepercenthose started");
+			console.log("1% images started");
 			res.setEncoding('utf8');
 			res.addListener('data', function (chunk){
+				chunkbuffer += chunk; //kunnen nog dingen inzitten van de vorige chunk
 
-				try{
-					var tweet = JSON.parse(chunk);
+				//chunk to seperate tweets
+				var chunkbits = chunkbuffer.split("\n");
+				chunkbuffer = ''; // chunkbuffer alvast leegmaken
 
-					// extract picture urls:
-					getPictureUrlsFromTweet(tweet, function (err, pictures){
-						if(err) return console.log(err);
+				for (var i = 0; i < chunkbits.length; i++) {
 
-						for(var i in pictures)
-							addPicture(pictures[i], State.onepercentpictures);
-					});
-				}catch(err){}
+					var tweet = parseTweetchunk( chunkbits[i] );
+					if(tweet){
+						// geen 'delete'-tweets doorsturen:
+						if(tweet.hasOwnProperty("created_at"))
+							getPictureUrlsFromTweet(tweet, function (err, pictures){
+								//console.log(pictures.length);
+								if(err) return console.log(err);
+
+								for(var i in pictures)
+									addPicture(pictures[i], State.onepercentpictures);
+							});
+					}else{
+						if(i == chunkbits.length-1){
+							// is laatste stukje
+							// stukje dat niet geparsed raakt terug aan de chunkbuffer toevoegen
+							// hopelijk komt het tweede stukje van de tweet dan straks binnen
+							chunkbuffer = chunkbits[i];
+						}else{
+							console.log("corrupt tweet:"); // zou niet niet mogen voorkomen (tenzij twitter echt slecht is :P)
+							console.log(chunkbits[i]);
+						}
+					}
+				}
 			});
 
 			res.addListener('end', function(){
@@ -328,8 +353,19 @@ function startTwitterSearchHose(hashtags){
 				var tweet = parseTweetchunk( chunkbits[i] );
 				if(tweet){
 					// geen 'delete'-tweets doorsturen:
-					if(tweet.hasOwnProperty("created_at"))
-						addSearchTweet(tweet);
+					if(tweet.hasOwnProperty("created_at")){
+						tweet.image = "";
+						getPictureUrlsFromTweet(tweet, function (err, pictures){
+							
+							if(err) return console.log(err);
+
+							if(pictures.length >0);
+								tweet.image = pictures[0];
+
+							addSearchTweet(tweet);
+						});
+					}
+						
 				}else{
 					if(i == chunkbits.length-1){
 						// is laatste stukje
@@ -386,8 +422,19 @@ function startTwitterhose(){
 					var tweet = parseTweetchunk( chunkbits[i] );
 					if(tweet){
 						// geen 'delete'-tweets doorsturen:
-						if(tweet.hasOwnProperty("created_at"))
-							addTweet(tweet);
+						if(tweet.hasOwnProperty("created_at")){
+							tweet.image = "";
+							getPictureUrlsFromTweet(tweet, function (err, pictures){
+								
+								if(err) return console.log(err);
+
+								if(pictures.length >0);
+									tweet.image = pictures[0];
+
+								addTweet(tweet);
+							});
+						}
+							//addTweet(tweet);
 					}else{
 						if(i == chunkbits.length-1){
 							// is laatste stukje
@@ -439,19 +486,19 @@ function addPicture(picture, array){
 
 		if(!_.contains(array, picture)){
 
-			var arrayname = "";
+			/*var arrayname = "";
 			var important = false;
 			if(array == State.onepercentpictures)
 				arrayname = "onepercentpictures";
 			if(array == State.importantpictures){
 				arrayname = "importantpictures";
 				var important = true;
-			}
+			}*/
 
-			console.log("Adding to "+arrayname+" " + picture);
-			array.push(picture);
+			//console.log("Adding to "+arrayname+" " + picture);
+			//array.push(picture);
 			// stuur maar direct naar de client ook:
-			io.sockets.emit('newpicture', {url: picture, important: important});
+			io.sockets.emit('newpicture', {url: picture});
 
 			cleanPictures();
 		}
