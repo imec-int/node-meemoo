@@ -37,7 +37,7 @@ $(function(){
     },
     inputobject: function(obj){
       var channel = $("#"+currentId).text();
-      console.log("input obj to "+channel);
+      //console.log("input obj to "+channel);
       //console.log(obj);
       if(channel && channel != ""){
         socket.emit("message",{channel:channel, data:obj});
