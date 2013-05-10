@@ -32,15 +32,15 @@ $(function(){
           return false;
         }
       });
-      
-      // temp: return random word
-      var terms = text.split(" ");
-      if (terms.length>0){
 
-        var rnd = Math.floor(Math.random()*terms.length);
-        $('#'+tagsId).val(terms[rnd]);
-        that.send('tags', terms[rnd]);
-      }
+      // temp: return random word
+      // var terms = text.split(" ");
+      // if (terms.length>0){
+
+      //   var rnd = Math.floor(Math.random()*terms.length);
+      //   $('#'+tagsId).val(terms[rnd]);
+      //   that.send('tags', terms[rnd]);
+      // }
     },
 
     inputs: {
