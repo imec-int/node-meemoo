@@ -6,6 +6,13 @@ $(function(){
   var tagsId = "text"+Date.now();
   var template =
     '<form class="textform">'+
+      '<select name= "menu"id= "menu">'+
+        '<option value= "openCalais">openCalais</option>'+
+        '<option value= "keywords">keywords</option>'+
+        '<option value= "category">category</option>'+
+        '<option value= "concepts">concepts</option>'+
+        '<option value= "namedEntities">namedEntities</option>'+
+        '<option value= "semiTags">semiTags</option>'+
       '<label><span class="label"><b>Tags</b></span> <br />'+
         '<input type="text" id="'+tagsId+'" style="width:90%"></input>'+
       '</label>'+
@@ -23,7 +30,8 @@ $(function(){
     },
     inputtext: function(text){
       var that = this;
-      $.post('/ajax/generatetagsfromtext', {text: text}, function(data){
+      var preferred = $('select').find('option:selected').val();
+      $.post('/ajax/generatetagsfromtext/'+preferred, {text: text}, function(data){
         if(data.error) console.log(data.error);
         else{
           data = JSON.parse(data).join(',');

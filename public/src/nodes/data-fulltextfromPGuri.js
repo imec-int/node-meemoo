@@ -7,7 +7,7 @@ $(function(){
   var template =
     '<form class="textform">'+
       '<label><span class="label"><b>Text</b></span> <br />'+
-        '<input type="text" class="text" style="width:90%"></input>'+
+        '<textarea class="text" rows=10 cols=25></textarea>'+
       '</label>'+
     '</form>';
 
@@ -22,11 +22,12 @@ $(function(){
 
     },
     inputuri: function(uri){
+      var that = this;
       $.get('/ajax/fullarticletext', {uri: uri}, function(data){
         if(data.error) console.log(data.error);
         else{
-          this.$('.text').val(data);
-          this.send('text', data);
+          $('.text').val(data.text);
+          that.send('text', data.text);
         }
       });
     },

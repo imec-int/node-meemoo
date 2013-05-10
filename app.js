@@ -602,11 +602,15 @@ app.post('/ajax/demorgenfeed/stop', function (req, res){
 app.get('/ajax/fullarticletext', function(req, res){
 	httpreq.get(req.query.uri, function(err, resu){
 		if(err) return res.json({error: err.stack});
-		xmlreader.read(resu.body, function(err, xml){
-			if(err) return res.json({error: err.stack});
-			var text = xml.articleDetail.text;
-			res.json({text: text});
-		});
+		var sax = require(__dirname+'/node_modules/xmlreader/node_modules/sax');
+		var saxparser = sax.parser(true);
+		//if cdata and tag = text onder articleDetail; return
+		saxparser.oncdata = function(cdata){
+			if(this.tags[0].name === 'articleDetail'  && this.tags[1].name === 'text'){
+				return res.json({text: cdata.replace(/(<([^>]+)>)/ig, "")});
+			}
+		}
+		saxparser.write(resu.body).close();
 	});
 });
 
@@ -614,7 +618,6 @@ function readPersgroepfeed(brand, callback){
 	// console.log("checking " + brand + " feed");
 	httpreq.get(persgroepUrls[brand], function (err, res){
 		if(err) return callback(err);
-
 		xmlreader.read(res.body, function (err, res){
 			if(err) return callback(err);
 
@@ -662,8 +665,8 @@ function watchPersgroepfeed(brand){
 }
 
 
-app.post('/ajax/generatetagsfromtext', function(req, res){
-	httpreq.post(uriconfig.MMLabUri + 'tagger/namedEntities',{body: req.body.text},  function(er, tags){
+app.post('/ajax/generatetagsfromtext/:endpoint', function(req, res){
+	httpreq.post(uriconfig.MMLabUri + 'tagger/' + req.params.endpoint,{body: req.body.text},  function(er, tags){
 		if(er) return res.json({error: 'error generating tags'});
 		console.log(tags.body);
 		res.send(tags.body);
