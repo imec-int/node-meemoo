@@ -178,7 +178,7 @@ $(function(){
         type: "string"
       },
       profile_background_color: {
-        type: "color"
+        type: "string"
       }
     }
 
