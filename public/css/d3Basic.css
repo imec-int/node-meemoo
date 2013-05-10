@@ -1,5 +1,52 @@
 body{
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
-  background-color: #ccc;
+}
+
+.tweet {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.retweet {
+  stroke: #f11;
+  stroke-opacity: 0.25;
+}
+
+.reply {
+  stroke: #f1e;
+  stroke-opacity: 0.25;
+}
+
+.xaxis path, .xaxis line {
+  fill: none;
+  stroke: gray;
+  stroke-width: 1px;
+}
+
+.legendColor{
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin-right: 10px;
+  text-align: right;
+}
+
+.twt{
+  background-color: rgba(0,0,255,0.8);
+}
+
+.rpl{
+  background-color: rgba(244,50,232,0.8);
+}
+
+.rtwt{
+  background-color: rgba(255,0,0,0.8);
+}
+
+#graphTitle{
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+  left: 40%;
 }
