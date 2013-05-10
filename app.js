@@ -92,6 +92,11 @@ app.get('/d3', function (req, res){
 	});
 });
 
+app.get('/packery', function (req, res){
+	res.render('packery', {
+		title: 'packery visualization'
+	});
+});
 
 app.get('/filter', function (req, res){
 	res.render('index2', {
