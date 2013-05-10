@@ -120,7 +120,7 @@ $(function(){
       this.send("location", this.$(".userLocation").val());
       this.send("language", this.$(".userLanguage").val());
       this.send("profileImage", this.$(".userImage").val());
-      this.send(".profile_background_color", this.$("profile_background_color").val());
+      this.send("profile_background_color", this.$(".profile_background_color").val());
     },
     inputs: {
       tweet: {
@@ -160,10 +160,10 @@ $(function(){
         type: "string"
       },
       followers: {
-        type: "string"
+        type: "int"
       },
       following: {
-        type: "string"
+        type: "int"
       },
       location: {
         type: "string"
