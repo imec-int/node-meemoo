@@ -30,6 +30,8 @@
     "cheerio": "~0.10.7",
     "underscore": "~1.4.4",
     "socket.io": "~0.9.13",
-    "xmlreader": "~0.2.3"
+    "xmlreader": "~0.2.3",
+    "feedparser": "~0.15.3",
+    "ent": "0.0.5"
   }
 }

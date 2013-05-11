@@ -24,6 +24,9 @@ $(function(){
       '<label><span class="label"><b>Image Url</b></span><br /> '+
         '<input type="text" class="image" style="width:90%"></input>'+
       '</label>'+
+      '<label><span class="label"><b>Text</b></span><br /> '+
+        '<input type="text" class="text" style="width:90%"></input>'+
+      '</label>'+
     '</form>';
 
   Iframework.NativeNodes["data-article"] = Iframework.NativeNodes["data"].extend({
@@ -69,15 +72,8 @@ $(function(){
       },
       creationDate: {
         type: "string"
-      },
-      introduction: {
-        type: "string"
-      },
-      image: {
-        type: "string"
       }
     }
-
   });
 
 

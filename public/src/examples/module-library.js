@@ -7,8 +7,9 @@ $(function(){
 
     data: [
       {"src":"meemoo:data/hlnfeed","info":{"title":"HLN Feed","author":"Sam Decrock","description":"Gather 'real-time' articles from the HLN syndication feed"}},
-      {"src":"meemoo:data/taggenerator","info":{"title":"Tag Generator","author":"MiX","description":"Generate tags from a text"}},
       {"src":"meemoo:data/demorgenfeed","info":{"title":"DeMorgen Feed","author":"MiX","description":"Gather 'real-time' articles from the DeMorgen syndication feed"}},
+      {"src":"meemoo:data/RSSfeed","info":{"title":"RSS Feed","author":"MiX","description":"Gather 'real-time' articles from an RSS feed"}},
+      {"src":"meemoo:data/taggenerator","info":{"title":"Tag Generator","author":"MiX","description":"Generate tags from a text"}},
       {"src":"meemoo:data/twitter","info":{"title":"Twitter - 1%","author":"Robby Wauters","description":"Gather real-time data from the Twitter Streaming API"}},
       {"src":"meemoo:data/twitterSearch","info":{"title":"Twitter - Hashtags","author":"Robby Wauters","description":"Gather real-time data from the filtered Twitter Streaming API based on hashtags"}},
       {"src":"meemoo:data/twitterPictures","info":{"title":"Twitter - Pictures","author":"Robby Wauters","description":"Gather real-time pitures from the Twitter Streaming API"}},
@@ -54,7 +55,7 @@ $(function(){
       {"src":"meemoo:util/color-hsla","info":{"title":"color-hsla","author":"meemoo","description":"make hsla() css color (hue, saturation, lightness, alpha)"}},
       {"src":"meemoo:util/math","info":{"title":"math","author":"silentmatt","description":"math equation evaluator"}},
       {"src":"meemoo:util/convert-int2float","info":{"title":"convert-int2float","author":"kaosbeat","description":"int2float"}}
-    
+
     ],
     flow: [
       {"src":"meemoo:util/gate","info":{"title":"gate","author":"meemoo","description":"stop the data flow and let one through"}},

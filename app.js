@@ -15,7 +15,8 @@ var http 		= require('http')
 var path 		= require('path');
 var socketio 	= require('socket.io');
 var xmlreader 	= require('xmlreader');
-
+var feedparser  = require('feedparser');
+var ent			= require('ent');
 var app = express();
 
 var debugtest = false;
@@ -356,7 +357,7 @@ function startTwitterSearchHose(hashtags){
 					if(tweet.hasOwnProperty("created_at")){
 						tweet.image = "";
 						getPictureUrlsFromTweet(tweet, function (err, pictures){
-							
+
 							if(err) return console.log(err);
 
 							if(pictures.length >0);
@@ -365,7 +366,7 @@ function startTwitterSearchHose(hashtags){
 							addSearchTweet(tweet);
 						});
 					}
-						
+
 				}else{
 					if(i == chunkbits.length-1){
 						// is laatste stukje
@@ -425,7 +426,7 @@ function startTwitterhose(){
 						if(tweet.hasOwnProperty("created_at")){
 							tweet.image = "";
 							getPictureUrlsFromTweet(tweet, function (err, pictures){
-								
+
 								if(err) return console.log(err);
 
 								if(pictures.length >0);
@@ -599,6 +600,58 @@ function extractInstagramUrl(url, callback){
 	});
 }
 
+var RSSArticles = {};
+var RSSTimeout = null;
+
+app.post('/ajax/rss/start', function(req, res){
+	RSSArticles = {};
+	clearTimeout(RSSTimeout);
+	watchRSSFeed(req.body.feed);
+	res.json({err: 0});
+});
+
+app.post('/ajax/rss/stop', function(req, res){
+	RSSArticles = {};
+	clearTimeout(RSSTimeout);
+
+});
+
+function watchRSSFeed(feed){
+	feedparser.parseUrl(feed, function(err, meta, articles){
+		if(err) console.log(err);
+		if(!err && articles) processArticles(articles);
+		RSSTimeout = setTimeout(function(){
+			watchRSSFeed(feed);
+		},10000); //binnen x seconden nog s checken
+	});
+}
+
+function processArticles(articles){
+	for(var i = 0; i < articles.length; i++){
+		var article = articles[i];
+		if(article.image && article.image.url)
+			article.image.url = '/prox?url=' + encodeURIComponent(article.image.url);
+		// same fields as PGarticle
+		var uniformArticle = {
+			title: article.title,
+			id: article.guid,
+			uri: article.link,
+			creationDate: article.pubdate
+		};
+		if(article.summary) uniformArticle.introduction = ent.decode(article.summary.replace(/(<([^>]+)>)/ig, ""));
+		if(article.image && article.image.url) uniformArticle.image = article.image.url;
+		if(article.description) uniformArticle.text = ent.decode(article.description.replace(/(<([^>]+)>)/ig, ""));
+
+		if(!RSSArticles[article.guid]){
+			RSSArticles[article.guid] = uniformArticle;
+			newRSSArticle(uniformArticle);
+		}
+	}
+}
+
+function newRSSArticle(article){
+	io.sockets.emit('newRSSarticle', article);
+}
 
 
 // Persgroep feeds: HLN & DeMorgen
@@ -654,7 +707,7 @@ app.get('/ajax/fullarticletext', function(req, res){
 		//if cdata and tag = text onder articleDetail; return
 		saxparser.oncdata = function(cdata){
 			if(this.tags[0].name === 'articleDetail'  && this.tags[1].name === 'text'){
-				return res.json({text: cdata.replace(/(<([^>]+)>)/ig, "")});
+				return res.json({text: ent.decode(cdata.replace(/(<([^>]+)>)/ig, ""))});
 			}
 		}
 		saxparser.write(resu.body).close();
