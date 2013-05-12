@@ -2,7 +2,8 @@ var socket;
 var svg;
 var params = {
     impact: 10,
-    duration: 1000
+    duration: 1000,
+    fattyness: 10
 };
 
 $(function(){
@@ -61,6 +62,11 @@ window.onload = function() {
 	  // Fires on every change, drag, keypress, etc.
 	  params.duration = value;
   });
+  var FatController = gui.add(params, 'fattyness', 1, 20);
+  FatController.onChange(function(value) {
+	  // Fires on every change, drag, keypress, etc.
+	  params.fattyness = value;
+  });
 
 
 };
@@ -85,18 +91,18 @@ function addTwarticle(data) {
   //var m = d3.svg.mouse(this);
 console.log(impact)
   svg.append("svg:circle")
-      .attr("cx", 100)
-      .attr("cy", 100)
+      .attr("cx", 1800)
+      .attr("cy", 500)
       .attr("r", data.radius/params.impact)
       .style("opacity", 1)
       .style("stroke", "#"+data.color)
-      .style("stroke-width", data.strokewidth)
+      .style("stroke-width", data.strokeWidth/params.fattyness)
       .style("stroke-opacity", 1)
-
     .transition()
       .duration(params.duration)
       .ease(Math.sqrt)
       .attr("r", 0)
+      .attr("cx", 100)
       .style("stroke-opacity", 0)
       .remove();
 
