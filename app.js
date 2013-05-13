@@ -567,7 +567,7 @@ function getPictureUrlsFromTweet(tweet, callback){
 
 function extractInstagramUrls(urls, callback){
 	var extractedUrls = [];
-
+	// hiervoor beter async.map gebruiken!!!!
 	async.forEach(urls, function (url, c){
 		extractInstagramUrl(url, function (err, extractedUrl){
 			if(err) return c(err);
@@ -576,7 +576,6 @@ function extractInstagramUrls(urls, callback){
 		});
 	}, function (err){
 		if(err) return callback(err);
-
 		callback(null, extractedUrls);
 	});
 }
@@ -590,11 +589,15 @@ function extractInstagramUrl(url, callback){
 			extractInstagramUrl(res.headers.location, callback);
 		}else{
 			try{
+				var error = null;
+				var extractedUrl = null;
 				var $ = cheerio.load(res.body);
-				var extractedUrl = $("#media_photo .photo").attr('src');
-				callback(null, extractedUrl);
+				extractedUrl = $("#media_photo .photo").attr('src');
 			}catch(err){
-				callback(err);
+				console.log(err);
+				error = err;
+			}finally{
+				callback(error, extractedUrl);
 			}
 		}
 	});
