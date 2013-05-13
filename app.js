@@ -348,38 +348,38 @@ function startTwitterSearchHose(hashtags){
 			//chunk to seperate tweets
 			var chunkbits = chunkbuffer.split("\n");
 			chunkbuffer = ''; // chunkbuffer alvast leegmaken
-
-			for (var i = 0; i < chunkbits.length; i++) {
-
-				var tweet = parseTweetchunk( chunkbits[i] );
+			async.forEach(chunkbits, function(chunkbit, asyncDone){
+				var tweet = parseTweetchunk( chunkbit);
 				if(tweet){
 					// geen 'delete'-tweets doorsturen:
 					if(tweet.hasOwnProperty("created_at")){
 						tweet.image = "";
 						getPictureUrlsFromTweet(tweet, function (err, pictures){
-
-							if(err) return console.log(err);
-
+							if(err) return asyncDone(err);
 							if(pictures.length >0);
 								tweet.image = pictures[0];
-
 							addSearchTweet(tweet);
+							asyncDone();
 						});
 					}
-
+					else asyncDone();
 				}else{
-					if(i == chunkbits.length-1){
+					if(chunkbits.indexOf(chunkbit) === chunkbits.length - 1){
 						// is laatste stukje
 						// stukje dat niet geparsed raakt terug aan de chunkbuffer toevoegen
 						// hopelijk komt het tweede stukje van de tweet dan straks binnen
-						chunkbuffer = chunkbits[i];
+						chunkbuffer = chunkbit;
 					}else{
 						console.log("corrupt tweet:"); // zou niet niet mogen voorkomen (tenzij twitter echt slecht is :P)
-						console.log(chunkbits[i]);
+						console.log(chunkbit);
 					}
+					asyncDone();
 				}
 
-			}
+
+			}, function(err){
+				if(err) console.log(err);
+			});
 		});
 
 		res.addListener('end', function(){
