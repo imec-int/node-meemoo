@@ -547,7 +547,7 @@ function getPictureUrlsFromTweet(tweet, callback){
 	if(tweet.entities.urls){
 		for(var j in tweet.entities.urls){
 			var url = tweet.entities.urls[j];
-			if(url.expanded_url.match(/http(s)?:\/\/instagr.am\/.+/i)){
+			if(url.expanded_url.match(/http(s)?:\/\/instagram\.com\/.+/i)){ // of instagra\.?m  ???
 				instagramUrls.push(url.expanded_url);
 			}
 		}
