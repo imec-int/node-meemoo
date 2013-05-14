@@ -192,7 +192,7 @@ function init(){
 	io.set('log level', 0); // geen socket.io debug info, thx!
 	io.on('connection', function(socket){
   		socket.on('message', function(data){
-  			console.log(data);
+  			// console.log(data);
   			io.sockets.emit(data["channel"],data["data"]);
   		});
   	});
@@ -773,7 +773,7 @@ function watchPersgroepfeed(brand){
 app.post('/ajax/generatetagsfromtext/:endpoint', function(req, res){
 	httpreq.post(uriconfig.MMLabUri + 'tagger/' + req.params.endpoint,{body: req.body.text},  function(er, tags){
 		if(er) return res.json({error: 'error generating tags'});
-		console.log(tags.body);
+		// console.log(tags.body);
 		res.send(tags.body);
 	});
 });
