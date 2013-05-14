@@ -4,9 +4,7 @@ $(function(){
   var countId = "count"+Date.now();
   var template =  '<center><img src="img/DM-logo.gif" alt="DeMorgen" height="30%"></center>'+
                   '<span id="'+countId+'" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'+
-                  '<form style="display: relative" class="textform">'+
-                    '<button class="start">Start</button>'+
-                  '</form>';
+                  '<button class="start">Start</button>';
 
 
 
