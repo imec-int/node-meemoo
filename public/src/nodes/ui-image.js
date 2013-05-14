@@ -5,17 +5,14 @@
 $(function(){
 
   var template =
-    '<form class="textform">'+
-      '<label><span class="label"></span> '+
-        '<img src="" class="image" alt="Twitter" width="90%">'+
-      '</label>'+
-    '</form>';
+      '<img src="" class="image" style="width:100%">'+
+      '<div class="label" style="text-align:center"></div>';
 
   Iframework.NativeNodes["ui-image"] = Iframework.NativeNodes["ui"].extend({
 
     template: _.template(template),
     info: {
-      title: "Image tag",
+      title: "Image",
       description: "a fast image box with a src attribute"
     },
     initializeModule: function(){
