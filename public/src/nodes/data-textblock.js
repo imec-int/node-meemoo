@@ -2,12 +2,11 @@
 
 $(function(){
   var template =
-                 '<form class="textform">'+
                   '<label><span class="label"><b>Text</b></span> <br />'+
-                    '<textarea class="text" rows=10 cols=25></textarea>'+
+                  '<textarea class="text" rows=10 cols=25></textarea>'+
                   '</label>'+
-                    '<button class="submit">Submit</button>'+
-                  '</form>';
+                  '<button class="submit">Submit</button>';
+
 
 
 

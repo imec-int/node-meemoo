@@ -7,12 +7,10 @@ $(function(){
 
   var template =  '<center ><img src="img/twitter-logo.png" alt="Twitter" width="60%"></center>'+
                   '<span id="'+countId+'" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'+
-                  '<form style="display: relative" class="textform">'+
-                    '<label><span style="font-size: 9px; color:#555" class="label">Hashtags/terms (comma-seperated)</span> '+
-                      '<input id="hashtags" type="text" class="text" style="width:90%"></input>'+
-                    '</label>'+
-                    '<button class="update">Update</button>'+
-                  '</form>';
+                  '<label><span style="font-size: 9px; color:#555" class="label">Hashtags/terms (comma-seperated)</span> '+
+                    '<input id="hashtags" type="text" class="text" style="width:90%"></input>'+
+                  '</label>'+
+                  '<button class="update">Update</button>';
 
 
   Iframework.NativeNodes["data-twitterSearch"] = Iframework.NativeNodes["data"].extend({

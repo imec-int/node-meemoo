@@ -4,10 +4,8 @@ $(function(){
   var countId = "count"+Date.now();
   var template =  '<center><img src="img/rss.gif" alt="RSS" height="30%"></center>'+
                   '<span id="'+countId+'" style="position: absolute;top: 3px;right: 3px;color: #27729B;">0</span>'+
-                  '<form style="display: relative" class="textform">'+
-                    '<input type="text" id="feed" style="width:100%;" value="http://www.demorgen.be/rss.xml"><br/>'+
-                    '<center><button class="start">Start/Update</button></center>'+
-                  '</form>';
+                  '<input type="text" id="feed" style="width:100%;" value="http://www.demorgen.be/rss.xml"><br/>'+
+                  '<center><button class="start">Start/Update</button></center>';
 
 
 
