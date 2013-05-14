@@ -82,9 +82,7 @@ app.all('*', function(req, res, next) {
 
 // Webserver root page:
 app.get('/', function (req, res){
-	res.render('index', {
-		title: 'Node Meemoo'
-	});
+	res.redirect('/index.html'); // originele index.html van meemoo
 });
 
 app.get('/d3', function (req, res){
@@ -109,37 +107,6 @@ app.get('/filter', function (req, res){
 	res.render('index2', {
 		title: 'A thousand twitter pictures'
 	});
-});
-
-// Javascript die alle urls bevat van pictures die al gevonden zijn:
-app.get('/server.js', function (req, res){
-	// interweave the important pictures with the onepercentpictures:
-
-	var allpictures = [];
-
-	var offset = 100;
-
-	var insertEveryXpictures = (State.onepercentpictures.length - offset)/State.importantpictures.length;
-
-	var i = 0;
-	var n = 1;
-	for(var x in State.onepercentpictures){
-		if(x > (offset + insertEveryXpictures*n) ){
-			n++;
-			allpictures.push({url:State.importantpictures[i], important: true});
-			i++;
-		}
-
-		allpictures.push({url:State.onepercentpictures[x], important: false});
-	}
-
-	// possible the rest of the importantpictures
-	while(i < State.importantpictures.length){
-		allpictures.push({url:State.importantpictures[i], important: true});
-		i++;
-	}
-
-	res.send("App.alreadyfoundpictures = " + JSON.stringify(allpictures) + ";");
 });
 
 app.post('/startOnepercent', function (req, res){
