@@ -42,7 +42,7 @@ $(function(){
         console.log(data.image);
       });
     },
-    inputterms: function(terms){
+    inputappendterms: function(appendterms){
       var totalArray = [];
       // check existing terms
       var old = $('#hashtags').val();
@@ -54,7 +54,7 @@ $(function(){
               totalArray.push(n);
         }
       // check new terms
-      var newArray = terms.split(",");
+      var newArray = appendterms.split(",");
         // trim terms remove non-alphanumeric
         for(t in newArray){
           var n = newArray[t].trim();
@@ -76,11 +76,32 @@ $(function(){
         console.log(dat);
       });
     },
+
+    inputreplaceterms: function(replaceterms){
+      var totalArray = [];
+      var tempArray = replaceterms.split(',');
+      for(t in tempArray){
+        var n = tempArray[t].trim();
+        if (/^[0-9A-Za-z]+$/.test(n)){
+          totalArray.push(n);
+        }
+      }
+      var totalString = totalArray.join();
+      $('#hashtags').val(totalString);
+      $.post("/startSearch", {hashtags: totalString}, function(dat){
+        console.log(dat);
+      });
+    },
     sendTweet: function(tweet){
       this.send("tweets", tweet);
     },
     inputs: {
-      terms: {
+      appendterms: {
+        type: "string",
+        description: "list of terms (comma separated)"
+      },
+
+      replaceterms: {
         type: "string",
         description: "list of terms (comma separated)"
       }
