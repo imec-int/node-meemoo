@@ -472,13 +472,15 @@ function parseTweetchunk(tweetchunk){
 
 function addTweet(tweet){
 	// profile pic url vervangen:
-	tweet.user.profile_image_url = '/prox?url=' + encodeURIComponent(tweet.user.profile_image_url);
+	if(tweet.user && tweet.user.profile_image_url)
+		tweet.user.profile_image_url = '/prox?url=' + encodeURIComponent(tweet.user.profile_image_url);
 	io.sockets.emit('newtweet', tweet);
 }
 
 function addSearchTweet(tweet){
 	// profile pic url vervangen:
-	tweet.user.profile_image_url = '/prox?url=' + encodeURIComponent(tweet.user.profile_image_url);
+	if(tweet.user && tweet.user.profile_image_url)
+		tweet.user.profile_image_url = '/prox?url=' + encodeURIComponent(tweet.user.profile_image_url);
 	io.sockets.emit('newtweetsearch', tweet);
 }
 
