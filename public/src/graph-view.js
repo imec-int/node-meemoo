@@ -2,7 +2,7 @@ $(function(){
 
   var template = 
     '<div class="edges">'+
-      '<svg id="edgesSvg" class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>'+
+      '<svg id="edgesSvg" class="edgesSvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="300"></svg>'+
     '</div>'+
     '<div class="nodes" />';
 
@@ -14,7 +14,10 @@ $(function(){
       "click": "click",
       "drop":  "drop",
       "selectablestart": "selectableStart",
-      "selectablestop":  "selectableStop"
+      "selectablestop":  "selectableStop",
+      "touchstart":  "touch",
+      "touchmove":   "touch",
+      "touchend":    "touch"
     },
     initialize: function () {
       this.render();
@@ -60,13 +63,19 @@ $(function(){
         });
       }
     },
+    touch: function (event) {
+      // Don't touchpunch selectable (it messes up scrolling)
+      event.stopPropagation();
+    },
     click: function (event) {
       // Hide dis/connection boxes
       $(".edge-edit").remove();
       Iframework.selectedPort = null;
       
-      // Unactivate modules
-      $("div.module").removeClass("active");
+      // Deactivate modules
+      this.$(".module").removeClass("active");
+      // Deselect modules
+      this.$(".module").removeClass("ui-selected");
     },
     drop: function (event, ui) {
       var type = ui.helper.data("meemoo-drag-type");
@@ -115,10 +124,10 @@ $(function(){
     addEdge: function (edge) {
       edge.initializeView();
 
-      if (!!edge.Source.view) {
+      if (edge.Source.view) {
         edge.Source.view.resetRelatedEdges();
       }
-      if (!!edge.Target.view) {
+      if (edge.Target.view) {
         edge.Target.view.resetRelatedEdges();
       }
     },
@@ -141,61 +150,41 @@ $(function(){
         edge.view.remove();
       }
     },
-    resizeEdgeSVG: function () {
-      var width = 0;
-      var height = 0;
-      this.model.get('nodes').each(function(node){
-        var thisRight = node.get('x') + node.get('w');
-        if ( thisRight > width ) {
-          width = thisRight;
-        }
-        var thisBottom = node.get('y') + node.get('h');
-        if ( thisBottom > height ) {
-          height = thisBottom;
-        }
-      }, this);
-      width += 150;
-      height += 50;
-      if (width === 150 && height === 50) {
+    resizeEdgeSVG: _.debounce( function () {
+      // _.debounce keeps it from getting called more than needed
+      var svg = this.$('.edgesSvg')[0];
+      var rect = svg.getBBox();
+      var width = rect.x + rect.width + 100;
+      var height = rect.y + rect.height + 100;
+      if (width === 100 && height === 100) {
         // So wires on new graph show up
         width = this.$el.width();
         height = this.$el.height();
       }
-      this.$('#edgesSvg').css({
-        "width": width,
-        "height": height
-      });
-    },
+      // Only get bigger
+      if (svg.getAttribute("width") < width) {
+        svg.setAttribute("width", Math.round(width));
+      }
+      if (svg.getAttribute("height") < height) {
+        svg.setAttribute("height", Math.round(height));
+      }
+    }, 100),
     selectableStart: function () {
       // Add a mask so that iframes don't steal mouse
       this.maskFrames();
     },
-    _selected: [],
     selectableStop: function (event) {
-      if (event) {
-        // Remove iframe masks
-        this.unmaskFrames();
-      }
-      this._selected = [];
-      var uiselected = $(".module.ui-selected");
-      for (var i=0; i<uiselected.length; i++) {
-        this._selected.push({
-          el: uiselected[i],
-          offset: $(uiselected[i]).offset(),
-          view: $(uiselected[i]).data("view")
-        });
-      }
-      Iframework._enableKeyBindings = true;
+      // Remove iframe masks
+      this.unmaskFrames();
     },
     selectAll: function () {
-      $(".module").addClass("ui-selected");
-      this.selectableStop();
+      this.$(".module").addClass("ui-selected");
     },
     selectNone: function () {
-      $(".module").removeClass("ui-selected");
-      this.selectableStop();
+      this.$(".module").removeClass("ui-selected");
     },
     cut: function(){
+      // Copy selected
       this.copy();
       var i;
       for (i=0; i<Iframework._copied.nodes.length; i++) {
@@ -203,28 +192,33 @@ $(function(){
         Iframework._copied.nodes[i].x -= 50;
         Iframework._copied.nodes[i].y -= 50;
       }
-      //Delete selected
-      for (i=0; i<this._selected.length; i++) {
-        this._selected[i].view.removeModel();
+      // Delete selected
+      var uiselected = this.$(".module.ui-selected");
+      for (i=0; i<uiselected.length; i++) {
+        $(uiselected[i]).data("iframework-node-view").removeModel();
       }
-      // Empty _selected
-      this.selectableStop();
     },
     copy: function(){
       var copied = {nodes:[],edges:[]};
-      for (var i=0; i<this._selected.length; i++) {
-        // toJSON() saves it with its current state
-        var nodeJSON = this._selected[i].view.model.toJSON();
+      var uiselected = this.$(".module.ui-selected");
+      var i, selected;
+
+      // Copy selected nodes
+      for (i=0; i<uiselected.length; i++) {
+        selected = $(uiselected[i]).data("iframework-node-view").model;
+        var nodeJSON = selected.toJSON();
         copied.nodes.push( JSON.parse(JSON.stringify(nodeJSON)) );
       }
+
       // Copy common edges
       this.model.get("edges").each(function(edge){
         var sourceSelected, targetSelected = false;
-        for (i=0; i<this._selected.length; i++) {
-          if (edge.Source.node === this._selected[i].view.model) {
+        for (i=0; i<uiselected.length; i++) {
+          selected = $(uiselected[i]).data("iframework-node-view").model;
+          if (edge.Source.node === selected) {
             sourceSelected = true;
           }
-          if (edge.Target.node === this._selected[i].view.model) {
+          if (edge.Target.node === selected) {
             targetSelected = true;
           }
         }
@@ -240,7 +234,7 @@ $(function(){
       if (copied && copied.nodes.length > 0) {
         var newNodes = [];
         // Select none
-        $(".module").removeClass("ui-selected");
+        this.$(".module").removeClass("ui-selected");
         for (var i=0; i<copied.nodes.length; i++) {
           var oldNode = copied.nodes[i];
           // Offset pasted
@@ -254,8 +248,6 @@ $(function(){
             newNode.view.select();
           }
         }
-        // Set new selection
-        this.selectableStop();
         // Add edges
         for (var j=0; j<copied.edges.length; j++) {
           var oldEdge = copied.edges[j];
@@ -277,13 +269,6 @@ $(function(){
         }
       }
     },
-    // deleteSelected: function(){
-    //   for (var i=0; i<this._selected.length; i++) {
-    //     this._selected[i].view.removeModel();
-    //   }
-    //   // Empty _selected
-    //   this.selectableStop();
-    // },
     maskFrames: function () {
       $(".iframe-type").append( '<div class="iframemask" />' );
     },
